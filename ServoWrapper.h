@@ -26,12 +26,7 @@ public:
       Serial.println("Error Initializing MCP2515...");
     }
   }
-
-  static void ISR_CAN()
-  {
-    // We don't do anything here, this is just for waking up the microcontroller
-  }
-
+  
   // Method to send CAN message
   bool sendCANMessage(uint8_t *data, uint8_t length) {
     if((CAN.sendMsgBuf(can_id, 0, length, data) == CAN_OK)){
