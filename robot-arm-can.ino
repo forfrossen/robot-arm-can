@@ -1,9 +1,14 @@
+#include "CANBus.h"
 #include "ServoWrapper.h"
-#include "CANBusController.h"
+#include "SimpleVector.h"
 
-CANBusController CAN;
-Servo42D_CAN servo1(CAN, 0x01); // Initialize another servo with CAN ID 0x02
-Servo42D_CAN servo2(CAN, 0x02); // Initialize servo with CAN ID 0x01
+const int CAN_CS_PIN = 10; // Adjust pin number as necessary
+
+CANBus canBus(CAN_CS_PIN);
+
+// Servo42D_CAN servo1(0x001, canBus); // Initialize another servo with CAN ID 0x001
+// Servo42D_CAN servo2(0x002, canBus); // Initialize servo with CAN ID 0x002
+Servo42D_CAN servo3(0x03, canBus); // Initialize servo with CAN ID 0x003
 
 bool doSpeedTest = false;
 unsigned long prevTx = 0;
@@ -11,6 +16,9 @@ unsigned long prevRnd = 0;
 unsigned int invlTx = 3000;
 unsigned int invlRnd = 3000;
 unsigned int randomValue = 0;
+unsigned int randomDirection = 0;
+unsigned int randomSpeed = 0;
+unsigned int randomAccel = 0;
 
 void setup()
 {
@@ -18,18 +26,32 @@ void setup()
   while (!Serial)
     ;
   SPI.begin();
-
-  CANBusController::begin();
+  Serial.println("Hallo, Test from Arm!");
+  canBus.begin();
   delay(1000);
+  // servo3.enableMotor();
+  // delay(100);
+
+  canBus.listenForMessages();
+  /*
+
   servo1.enableMotor();
+  servo2.enableMotor();
+  */
 
   // For random number generation
   randomSeed(analogRead(0));
   randomValue = random(-40000, +40000);
+  randomSpeed = random(0, 2000);
+  randomDirection = random(0, 1);
+  randomAccel = random(0, 255);
+  delay(100);
 }
 
 void loop()
 {
+
+  canBus.listenForMessages();
   // Serial.println("================================");
   // servo1.stopMotor();
   // servo2.stopMotor();
@@ -37,16 +59,30 @@ void loop()
   // int status = servo1.queryMotorStatus();
 
   // int randomDirection = random(0, 1);
+  /*
+   */
 
   if ((millis() - prevRnd) >= invlTx)
   {
     randomValue = random(-40000, +40000);
     prevRnd = millis();
   }
-
   if ((millis() - prevTx) >= invlRnd)
   {
-    servo1.setTargetPosition(randomValue, 10, 1, true);
+    servo3.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
+    servo3.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
+    /*
+    servo3.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
+    servo3.setTargetPosition(randomValue, 100, 10, true);
+    servo3.setSpeedAndAcceleration(1000, true, 10);
+    servo1.setSpeedAndAcceleration(1000, true, 10);
+    servo2.setSpeedAndAcceleration(1000, true, 10);
+    servo2.setTargetPosition(randomValue * 10, 100, 10, true);
+
+    servo1.setSpeedAndAcceleration(1000, 1, true);
+    servo2.setSpeedAndAcceleration(1000, 1, true);
+    */
+
     prevTx = millis();
   }
 
@@ -61,7 +97,6 @@ void loop()
 
       servo1.setTargetPosition(randomValue*-1, 10, 1, false);
       position = servo1.queryMotorPosition();
-      delay(3000);
+  delay(10);
   */
-  servo1.readCanMessages();
 }

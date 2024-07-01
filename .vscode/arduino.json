@@ -1,5 +1,6 @@
 {
     "port": "COM5",
-    "board": "arduino:avr:uno",
-    "sketch": "robot-arm-can.ino"
+    "sketch": "robot-arm-can.ino",
+    "output": "../ArduinoOutput",
+    "board": "arduino:avr:uno"
 }
