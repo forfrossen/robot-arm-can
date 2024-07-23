@@ -38,6 +38,7 @@ public:
     Serial.println();
     Serial.println();
     Serial.println("************************************************");
+    Serial.println();
     Serial.println("class [Servo42D_CAN] - fn: [handleReceivedMessage]");
     Serial.println("ID: ");
     Serial.print(canId, HEX);
@@ -67,6 +68,7 @@ public:
       Serial.print("Received message from unknown ID: ");
       Serial.print(id);
     }
+    Serial.println();
     Serial.println("************************************************");
     Serial.println();
     Serial.println();
@@ -78,6 +80,7 @@ public:
     Serial.println();
     Serial.println();
     Serial.println("************************************************");
+    Serial.println();
     Serial.println("class [Servo42D_CAN] - fn: [sendCommand]");
     Serial.print("ID: ");
     Serial.print(canId);
@@ -94,6 +97,7 @@ public:
     {
       Serial.println("    ==> Error sending message!");
     }
+    Serial.println();
     Serial.println("************************************************");
     Serial.println();
     Serial.println();
@@ -112,10 +116,9 @@ public:
     Serial.println();
     Serial.println("************************************************");
     Serial.println("class [Servo42D_CAN] - fn: [setSpeedAndAcceleration]");
-    Serial.println("ID: ");
+    Serial.print("ID: ");
     Serial.print(canId, HEX);
-    Serial.println();
-    Serial.println(" Speed: ");
+    Serial.print(", Speed: ");
     Serial.print(speed);
     Serial.print(", Acceleration: ");
     Serial.print(acceleration);
@@ -142,10 +145,11 @@ public:
     Serial.println();
     Serial.println();
     Serial.println("************************************************");
+    Serial.println();
     Serial.println("class [Servo42D_CAN] - fn: [setTargetPosition]");
     Serial.print("ID: ");
     Serial.print(canId, HEX);
-    Serial.println("Position: ");
+    Serial.print(", Position: ");
     Serial.print(position);
     Serial.print(", Geschwindigkeit: ");
     Serial.print(speed);

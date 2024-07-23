@@ -69,21 +69,39 @@ public:
 
   byte calculateCRC(uint32_t id, const byte *data, uint8_t length)
   {
-    byte crc = id; // Start with the CAN ID
+    byte crc = 0xFF;
+    crc ^= (id >> 24) & 0xFF; // Process each byte of the ID
+    crc ^= (id >> 16) & 0xFF;
+    crc ^= (id >> 8) & 0xFF;
+    crc ^= id & 0xFF;
     for (int i = 0; i < length; ++i)
     {
-      crc += data[i];
+      crc ^= data[i];
     }
-    return crc & 0xFF;
+    return crc;
   }
 
   bool sendCANMessage(uint32_t id, uint8_t length, uint8_t *data)
   {
-    data[length] = calculateCRC(id, data, length); // Append the CRC to the end of the data
+    uint8_t crc = calculateCRC(id, data, length); // Calculate CRC
+
+    if (length < 8)
+    {                     // Ensure there is space for the CRC
+      data[length] = crc; // Append CRC to the end of data
+    }
+
+    // data[length] = calculateCRC(id, data, length); // Append the CRC to the end of the data
 
     struct can_frame frame;
     frame.can_id = id;
     frame.can_dlc = length;
+
+    // Ensure not to exceed CAN frame data length limit
+    if (frame.can_dlc > 8)
+    {
+      frame.can_dlc = 8;
+    }
+
     memcpy(frame.data, data, frame.can_dlc);
 
     if (mcp2515.sendMessage(&frame) == MCP2515::ERROR_OK)
@@ -108,20 +126,6 @@ public:
     }
   }
 
-  bool
-  readCANMessage(uint32_t *id, uint8_t *len, uint8_t *data)
-  {
-    struct can_frame frame;
-    if (mcp2515.readMessage(&frame) == MCP2515::ERROR_OK)
-    {
-      *id = frame.can_id;
-      *len = frame.can_dlc;
-      memcpy(data, frame.data, frame.can_dlc);
-      return true;
-    }
-    return false;
-  }
-
   void registerCallback(CallbackType callback)
   {
     if (callbackCount < MAX_CALLBACKS)
@@ -140,6 +144,11 @@ public:
       {
         callbacks[i](frame.can_id, frame.can_dlc, frame.data);
       }
+      Serial.println();
+      Serial.println();
+      Serial.println("************************************************");
+      Serial.println();
+      Serial.println("class [Servo42D_CAN] - fn: [handleReceivedMessage]");
       Serial.print("ID: ");
       Serial.println(frame.can_id, HEX);
       Serial.print("Length: ");
@@ -150,6 +159,9 @@ public:
         Serial.print(frame.data[i], HEX);
         Serial.print(" ");
       }
+      Serial.println();
+      Serial.println("************************************************");
+      Serial.println();
       Serial.println();
     }
   }
