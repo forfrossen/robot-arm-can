@@ -2,7 +2,7 @@
 #include "ServoWrapper.h"
 #include "SimpleVector.h"
 
-const int CAN_CS_PIN = 10; // Adjust pin number as necessary
+// const int CAN_CS_PIN = 10; // Adjust pin number as necessary
 
 CANBus canBus(CAN_CS_PIN);
 
@@ -13,8 +13,8 @@ Servo42D_CAN servo3(0x03, canBus); // Initialize servo with CAN ID 0x003
 bool doSpeedTest = false;
 unsigned long prevTx = 0;
 unsigned long prevRnd = 0;
-unsigned int invlTx = 10000;
-unsigned int invlRnd = 10000;
+unsigned int invlTx = 4000;
+unsigned int invlRnd = 4000;
 unsigned int randomValue = 0;
 unsigned int randomDirection = 0;
 unsigned int randomSpeed = 0;
@@ -70,9 +70,15 @@ void loop()
 
   if ((millis() - prevTx) >= invlRnd)
   {
+    // servo1.queryMotorPosition();
+    servo2.queryMotorPosition();
+    // servo3.queryMotorPosition();
+    /*
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo3.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
+    */
+
     /*
     servo1.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     servo2.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
