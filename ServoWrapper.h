@@ -2,38 +2,31 @@
 #define SERVO42D_CAN_H
 
 #include "CANBus.h" // Include CANBus.h with include guards
-#include "SimpleVector.h"
 #include "commandMapper.h"
+
+#define MAX_PROCESSED_MESSAGES 10 // Define the maximum number of processed messages to track
 
 class Servo42D_CAN
 {
 private:
   CANBus &canBus;
-  uint32_t canId;
 
-  static SimpleVector<Servo42D_CAN *> instances;
-
-  static void callback(unsigned long id, uint8_t length, uint8_t *data)
-  {
-    for (size_t i = 0; i < instances.getSize(); ++i)
-    {
-      Servo42D_CAN *instance = instances[i];
-      if (instance->canId == id)
-      {
-        instance->handleReceivedMessage(id, length, data);
-        break;
-      }
-    }
-  }
+  uint32_t processedMessageIds[MAX_PROCESSED_MESSAGES]; // Array to track processed message IDs
+  size_t processedMessageCount;                         // Counter for the number of processed messages
 
 public:
+  uint32_t canId;
+
   Servo42D_CAN(uint32_t id, CANBus &bus) : canId(id), canBus(bus)
   {
-    instances.push_back(this);
-    canBus.registerCallback(callback);
   }
 
-  void handleReceivedMessage(uint32_t id, uint8_t len, uint8_t *data)
+  void processCANMessage(const struct can_frame &frame)
+  {
+    handleReceivedMessage(frame.can_id, frame.can_dlc, frame.data);
+  }
+
+  void handleReceivedMessage(uint32_t id, uint8_t len, const __u8 *data)
   {
     Serial.println();
     Serial.println();
@@ -42,32 +35,35 @@ public:
     Serial.println("class [Servo42D_CAN] - fn: [handleReceivedMessage]");
     Serial.print("ID: ");
     Serial.println(canId, HEX);
+    Serial.print("length: ");
+    Serial.println(len, HEX);
 
     if (id == canId)
     {
-      Serial.println("Received message: ");
 
+      Serial.println("Received message ");
       char msgString[128]; // Array to store serial string
-      /*
-      if (id & CAN_IS_EXTENDED) // Determine if ID is standard (11 bits) or extended (29 bits)
-        sprintf_P(msgString, PSTR("Extended ID: 0x%.8lX  DLC: %1d  Data:"), (id & CAN_EXTENDED_ID), len);
-      else
-        sprintf_P(msgString, PSTR("Standard ID: 0x%.3lX       DLC: %1d  Data:"), id, len);
 
-      */
-      Serial.print(msgString);
-
-      for (byte i = 0; i < len; i++)
+      if (data[0] == 0x30)
       {
-        sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
-        Serial.print(msgString);
+        Serial.print("with code: ");
+        Serial.println(data[0], HEX);
+        decodeEncoderValue(data, len);
+      }
+      else
+      {
+        Serial.print("unimplemented code: ");
+        Serial.println(msgString);
+        Serial.print("Raw code byte: ");
+        Serial.println(data[0]);
+        for (byte i = 0; i < len; i++)
+        {
+          sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
+          Serial.print(msgString);
+        }
       }
     }
-    else
-    {
-      Serial.print("Received message from unknown ID: ");
-      Serial.print(id);
-    }
+    Serial.println();
     Serial.println();
     Serial.println("************************************************");
     Serial.println();
@@ -83,11 +79,21 @@ public:
     Serial.println();
     Serial.println("class [Servo42D_CAN] - fn: [sendCommand]");
     Serial.print("ID: ");
-    Serial.print(canId);
-    Serial.println();
-    /*Serial.println("Sending command [");
+    Serial.println(canId);
+
+    Serial.print("code: ");
+    Serial.println(data[0], HEX);
+    /*
+        const char *commandName = getCommandNameFromCode(data[0]);
+        char msgString[128];
+        sprintf_P(msgString, PSTR(" X"), commandName);
+        Serial.print("Sending command [");
+        Serial.print(msgString);
+        Serial.println("]");
+    */
+    /*
     Serial.print(getCommandNameFromCode(data[0]));
-    Serial.print("]");*/
+    */
 
     if (canBus.sendCANMessage(canId, length, data))
     {
@@ -233,6 +239,26 @@ public:
     }
   }
 
+  void decodeEncoderValue(const __u8 *data, uint8_t length)
+  {
+    if (length != 8 || data[0] != 0x30)
+    {
+      Serial.println("Invalid response length or code.");
+      return;
+    }
+
+    int32_t carry = (data[1] << 24) | (data[2] << 16) | (data[3] << 8) | data[4];
+    uint16_t value = (data[5] << 8) | data[6];
+    uint8_t crc = data[7];
+
+    Serial.print("Carry value: ");
+    Serial.println(carry);
+    Serial.print("Encoder value: ");
+    Serial.println(value);
+    Serial.print("CRC: ");
+    Serial.println(crc, HEX);
+  }
+
   /*
 
   int queryMotorPosition()
@@ -349,8 +375,4 @@ public:
   }
   */
 };
-
-// Define the static member
-SimpleVector<Servo42D_CAN *> Servo42D_CAN::instances;
-
 #endif

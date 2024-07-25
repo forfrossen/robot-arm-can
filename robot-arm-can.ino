@@ -1,19 +1,20 @@
 #include "CANBus.h"
 #include "ServoWrapper.h"
-#include "SimpleVector.h"
-
-// const int CAN_CS_PIN = 10; // Adjust pin number as necessary
+#include <LittleVector.h>
 
 CANBus canBus(CAN_CS_PIN);
+Servo42D_CAN servo1(0x01, canBus);
+Servo42D_CAN servo2(0x02, canBus);
+Servo42D_CAN servo3(0x03, canBus);
+LittleVector<Servo42D_CAN *> Servos;
 
-Servo42D_CAN servo1(0x01, canBus); // Initialize another servo with CAN ID 0x001
-Servo42D_CAN servo2(0x02, canBus); // Initialize servo with CAN ID 0x002
-Servo42D_CAN servo3(0x03, canBus); // Initialize servo with CAN ID 0x003
-
+struct can_frame frame;
 bool doSpeedTest = false;
 unsigned long prevTx = 0;
+unsigned long prevRx = 0;
 unsigned long prevRnd = 0;
 unsigned int invlTx = 4000;
+unsigned int invlRx = 50;
 unsigned int invlRnd = 4000;
 unsigned int randomValue = 0;
 unsigned int randomDirection = 0;
@@ -29,6 +30,10 @@ void setup()
   Serial.println("Hallo, Test from Arm !");
   canBus.begin();
   delay(1000);
+
+  Servos.push_back(&servo1);
+  Servos.push_back(&servo2);
+  Servos.push_back(&servo3);
 
   /*
   servo3.enableMotor();
@@ -51,7 +56,8 @@ void setup()
 void loop()
 {
 
-  canBus.listenForMessages();
+  checkForMessages();
+
   // Serial.println("================================");
   // servo1.stopMotor();
   // servo2.stopMotor();
@@ -72,6 +78,7 @@ void loop()
   {
     // servo1.queryMotorPosition();
     servo2.queryMotorPosition();
+    servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     // servo3.queryMotorPosition();
     /*
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
@@ -97,18 +104,26 @@ void loop()
 
     prevTx = millis();
   }
+}
 
-  /*
-  servo1.setTargetPosition(0, 10, 1, true);
-  int position = servo1.queryMotorPosition();
-  delay(3000);
+void checkForMessages()
+{
+  if ((millis() - prevRx) <= invlRx)
+  {
+    return;
+  }
 
-  servo1.setTargetPosition(randomValue, 10, 1, false);
-  position = servo1.queryMotorPosition();
-  delay(3000);
+  if (!canBus.listenForMessages(frame))
+  {
+    return;
+  }
 
-  servo1.setTargetPosition(randomValue*-1, 10, 1, false);
-  position = servo1.queryMotorPosition();
-  delay(10);
-  */
+  for (int i = 0; i <= Servos.size(); i++)
+  {
+    if (Servos[i]->canId == frame.can_id)
+    {
+      Servos[i]->processCANMessage(frame);
+    }
+  }
+  prevRx = millis();
 }

@@ -14,9 +14,6 @@ class CANBus
 {
 private:
   MCP2515 mcp2515;
-  typedef void (*CallbackType)(unsigned long, uint8_t, uint8_t *);
-  CallbackType callbacks[MAX_CALLBACKS];
-  int callbackCount;
 
   void printCANStatus()
   {
@@ -42,7 +39,7 @@ private:
   }
 
 public:
-  CANBus(int csPin) : mcp2515(csPin), callbackCount(0) {}
+  CANBus(int csPin) : mcp2515(csPin) {}
 
   void begin()
   {
@@ -91,18 +88,6 @@ public:
 
     if (mcp2515.sendMessage(&frame) == MCP2515::ERROR_OK)
     {
-      /*
-      Serial.println("Success sending message");
-      printCANStatus(); // Print status and error flags
-
-      Serial.print("Data: ");
-      for (int i = 0; i < frame.can_dlc; i++)
-      {
-        Serial.print(frame.data[i], HEX);
-        Serial.print(" ");
-      }
-      Serial.println();
-      */
       return true;
     }
     else
@@ -121,44 +106,13 @@ public:
     }
   }
 
-  bool readCANMessage(unsigned long *id, uint8_t *len, uint8_t *data)
+  bool listenForMessages(struct can_frame &frame)
   {
-    struct can_frame frame;
     if (mcp2515.readMessage(&frame) == MCP2515::ERROR_OK)
     {
-      *id = frame.can_id;
-      *len = frame.can_dlc;
-      memcpy(data, frame.data, frame.can_dlc);
       return true;
     }
     return false;
-  }
-
-  void registerCallback(CallbackType callback)
-  {
-    if (callbackCount < MAX_CALLBACKS)
-    {
-      callbacks[callbackCount++] = callback;
-    }
-  }
-
-  void listenForMessages()
-  {
-    struct can_frame frame;
-    if (mcp2515.readMessage(&frame) == MCP2515::ERROR_OK)
-    {
-      for (int i = 0; i < frame.can_dlc; i++)
-      {
-        Serial.print(frame.data[i], HEX);
-        Serial.print(" ");
-      }
-      Serial.println();
-
-      for (int i = 0; i < callbackCount; i++)
-      {
-        callbacks[i](frame.can_id, frame.can_dlc, frame.data);
-      }
-    }
   }
 };
 
