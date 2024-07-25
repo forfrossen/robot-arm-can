@@ -40,28 +40,7 @@ public:
 
     if (id == canId)
     {
-
-      Serial.println("Received message ");
-      char msgString[128]; // Array to store serial string
-
-      if (data[0] == 0x30)
-      {
-        Serial.print("with code: ");
-        Serial.println(data[0], HEX);
-        decodeEncoderValue(data, len);
-      }
-      else
-      {
-        Serial.print("unimplemented code: ");
-        Serial.println(msgString);
-        Serial.print("Raw code byte: ");
-        Serial.println(data[0]);
-        for (byte i = 0; i < len; i++)
-        {
-          sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
-          Serial.print(msgString);
-        }
-      }
+      decodeMessage(data, len);
     }
     Serial.println();
     Serial.println();
@@ -112,12 +91,19 @@ public:
   // Set Speed and Acceleration together
   void setSpeedAndAcceleration(uint16_t speed, uint8_t acceleration, bool direction = true)
   {
+
+    if (speed > 3000)
+    {
+      speed = 3000; // Clamp speed to maximum value
+    }
+
     uint8_t data[5];
     data[0] = 0xF6;                                              // Command code for setting speed and acceleration
     data[1] = (direction ? 0x80 : 0x00) | ((speed >> 8) & 0x0F); // Direction bit in the highest bit and upper 4 bits of speed
     data[2] = speed & 0xFF;                                      // Lower 8 bits of speed
     data[3] = acceleration;                                      // Acceleration
-    // data[4] = calculateCRC(data, 5);   // CRC including CAN ID (0x01)
+                                                                 // data[4] = calculateCRC(data, 5);   // CRC including CAN ID (0x01)
+
     Serial.println();
     Serial.println();
     Serial.println("************************************************");
@@ -134,7 +120,7 @@ public:
     Serial.println("************************************************");
     Serial.println();
     Serial.println();
-    sendCommand(data, 5);
+    sendCommand(data, 4);
   }
 
   void setTargetPosition(uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
@@ -167,7 +153,7 @@ public:
     Serial.println("************************************************");
     Serial.println();
     Serial.println();
-    sendCommand(data, 8);
+    sendCommand(data, 7);
   }
 
   void stopMotor()
@@ -257,6 +243,31 @@ public:
     Serial.println(value);
     Serial.print("CRC: ");
     Serial.println(crc, HEX);
+  }
+
+  void decodeMessage(const __u8 *data, uint8_t length)
+  {
+    Serial.println("Received message ");
+    char msgString[128]; // Array to store serial string
+
+    if (data[0] == 0x30)
+    {
+      Serial.print("with code: ");
+      Serial.println(data[0], HEX);
+      decodeEncoderValue(data, length);
+    }
+    else
+    {
+      Serial.print("unimplemented code: ");
+      Serial.println(data[0], HEX);
+      Serial.print("Raw code byte: ");
+      Serial.println(data[0]);
+      for (byte i = 0; i < length; i++)
+      {
+        sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
+        Serial.print(msgString);
+      }
+    }
   }
 
   /*
