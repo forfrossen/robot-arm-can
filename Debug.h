@@ -1,50 +1,77 @@
 #ifndef DEBUGGER_H
 #define DEBUGGER_H
-#include <Arduino.h>
 
 enum LogLevel
 {
-    "INFO",
-    "WARNING",
-    "ERROR"
+  INFO,
+  WARNING,
+  ERROR
 };
+
+const char *LogLevelNames[3] = {"INFO", "WARNING", "ERROR"};
 
 class Debug
 {
 private:
-    String className;
+  const char *className;
 
 public:
-    Debug(const String &name) : className(name) {}
+  Debug(const char *name) : className(name) {}
 
-    Static LogLevel GlobalLogLevel;
+  static const LogLevel GlobalLogLevel = LogLevel::INFO;
 
-    void log(const String &methodName, enum LogLevel, const String &message) const
+  void log(const char *methodName, const LogLevel logLevel, const char *message)
+  {
+    // String logLevelName = LogLevelNames[logLevel];
+    // String debugMessage = String("[") + logLevelName + String("]");
+    //  sprintf(debugMessage, "[%s]%s::%s\t", logLevelName, className, methodName);
+    //  sprintf(debugMessage, "[%s]", logLevelName);
+    const char *logLevelName = LogLevelNames[logLevel];
+    Serial.print(F("["));
+    Serial.print(logLevelName);
+    Serial.print(F("] "));
+    Serial.print(className);
+    Serial.print("::");
+    Serial.print(methodName);
+    Serial.print("\t");
+    Serial.print(message);
+    Serial.println();
+    // Serial.print(debugMessage);
+  }
+
+  void info(const char *methodName, const char *message)
+  {
+    if (GlobalLogLevel == LogLevel::INFO)
     {
-        String debugMessage = "[ " + LogLevel.toUpperCase() + " ] " + className + ":" + methodName + " - " + message;
-        Serial.println(debugMessage);
+      log(methodName, LogLevel::INFO, message);
     }
+  }
 
-    void info(const String &methodName, const String &message) const
+  void warning(const char *methodName, const char *message)
+  {
+    if (GlobalLogLevel == LogLevel::INFO || GlobalLogLevel == LogLevel::WARNING)
     {
-        if (GlobalLogLevel == "INFO")
-        {
-            log(methodName, LogLevel::INFO, message);
-        }
+      log(methodName, LogLevel::WARNING, message);
     }
+  }
 
-    void warning(const String &methodName, const String &message) const
-    {
-        if (GlobalLogLevel == "INFO" || GlobalLogLevel == "WARNING")
-        {
-            log(methodName, LogLevel::WARNING, message);
-        }
-    }
+  void error(const char *methodName, const char *message)
+  {
+    log(methodName, LogLevel::ERROR, message);
+  }
 
-    void error(const String &methodName, const String &message) const
+  String getLogLevelName(LogLevel logLevel)
+  {
+    switch (logLevel)
     {
-        log(methodName, LogLevel::ERROR, message);
+    case LogLevel::INFO:
+      return "INFO";
+    case LogLevel::WARNING:
+      return "WARNING";
+    case LogLevel::ERROR:
+      return "ERROR";
     }
+  }
 };
 
 #endif

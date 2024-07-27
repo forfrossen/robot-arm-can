@@ -3,6 +3,7 @@
 
 #include "CANBus.h" // Include CANBus.h with include guards
 #include "commandMapper.h"
+#include "Debug.h"
 
 #define MAX_PROCESSED_MESSAGES 10 // Define the maximum number of processed messages to track
 
@@ -10,15 +11,18 @@ class Servo42D_CAN
 {
 private:
   CANBus &canBus;
-
-  uint32_t processedMessageIds[MAX_PROCESSED_MESSAGES]; // Array to track processed message IDs
-  size_t processedMessageCount;                         // Counter for the number of processed messages
+  Debug debug = Debug("Servo42D_CAN");
 
 public:
   uint32_t canId;
 
   Servo42D_CAN(uint32_t id, CANBus &bus) : canId(id), canBus(bus)
   {
+    /*
+    char message[100] = "";
+    sprintf(message, "New Servo42D_CAN object created with CAN ID: %d", canId); // ja%lu", canId
+    debug.info("constructor", message);
+    */
   }
 
   void processCANMessage(const struct can_frame &frame)
@@ -26,66 +30,52 @@ public:
     handleReceivedMessage(frame.can_id, frame.can_dlc, frame.data);
   }
 
-  void handleReceivedMessage(uint32_t id, uint8_t len, const __u8 *data)
+  void handleReceivedMessage(uint32_t id, uint8_t length, const uint8_t *data)
   {
-    Serial.println();
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println("class [Servo42D_CAN] - fn: [handleReceivedMessage]");
-    Serial.print("ID: ");
-    Serial.println(canId, HEX);
-    Serial.print("length: ");
-    Serial.println(len, HEX);
+    const uint8_t *code = &data[0];
+    const char *commandName = getCommandNameFromCode(code);
+    /*
+    char code[3];
+    sprintf(code, "%02X", data[0]);
+    Serial.println(code);
+    Serial.println(data[0]);
+    */
 
+    char message[100];
+    sprintf(message, "ID: %u\t length: %u", canId, length);
+    /*
+    sprintf(message, "__func__: %s", __func__);
+
+    message += "commandName: " + *commandName;
+    */
+    debug.info("handleReceivedMessage", message);
     if (id == canId)
     {
-      decodeMessage(data, len);
+      decodeMessage(data, length);
     }
-    Serial.println();
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println();
   }
 
   // Method to send CAN message
   void sendCommand(uint8_t *data, uint8_t length)
   {
-    Serial.println();
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println("class [Servo42D_CAN] - fn: [sendCommand]");
-    Serial.print("ID: ");
-    Serial.println(canId);
-
-    Serial.print("code: ");
-    Serial.println(data[0], HEX);
-    /*
-        const char *commandName = getCommandNameFromCode(data[0]);
-        char msgString[128];
-        sprintf_P(msgString, PSTR(" X"), commandName);
-        Serial.print("Sending command [");
-        Serial.print(msgString);
-        Serial.println("]");
-    */
-    /*
-    Serial.print(getCommandNameFromCode(data[0]));
-    */
+    // const char *commandName = getCommandNameFromCode(&data[0]);
+    char message[100]; // String("ID: "); //"ID: " + String(canId, HEX) + "\t"
+    sprintf(message, "ID: %u\t length: %u", canId, length);
+    // message += "code: " + String(data[0], HEX) + "\t";
+    //  message += "commandName: " + *commandName;
 
     if (canBus.sendCANMessage(canId, length, data))
     {
-      Serial.println("    ==> Message sent successfully!");
+      // message = String(message + "    ==> Message sent successfully!");
+      debug.info("sendCommand", message);
+      // Serial.println(message);
     }
     else
     {
-      Serial.println("    ==> Error sending message!");
+      // message = String(message + "    ==> Error sending message!");
+      debug.warning("sendCommand", message);
+      // Serial.println(message);
     }
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println();
   }
 
   // Set Speed and Acceleration together

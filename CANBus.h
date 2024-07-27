@@ -3,6 +3,7 @@
 
 #include <mcp2515.h>
 #include <SPI.h>
+#include "Debug.h"
 
 #define CAN_CS_PIN 10
 #define CAN_INT_PIN 2
@@ -15,27 +16,29 @@ class CANBus
 private:
   MCP2515 mcp2515;
 
+  Debug debug = Debug("CANBus");
+
   void printCANStatus()
   {
     uint8_t errorFlag = mcp2515.getErrorFlags();
 
-    Serial.print("Error Flag: 0x");
+    Serial.print(F("Error Flag: 0x"));
     Serial.println(errorFlag, HEX);
 
     if (errorFlag & MCP2515::EFLG_RX0OVR)
-      Serial.println("Receive Buffer 0 Overflow");
+      Serial.println(F("Receive Buffer 0 Overflow"));
     if (errorFlag & MCP2515::EFLG_TXEP)
-      Serial.println("Transmit Error Passive");
+      Serial.println(F("Transmit Error Passive"));
     if (errorFlag & MCP2515::EFLG_TXBO)
-      Serial.println("Transmit Bus-Off");
+      Serial.println(F("Transmit Bus-Off"));
     if (errorFlag & MCP2515::EFLG_RXEP)
-      Serial.println("Receive Error Passive");
+      Serial.println(F("Receive Error Passive"));
     if (errorFlag & MCP2515::EFLG_TXWAR)
-      Serial.println("Transmit Warning");
+      Serial.println(F("Transmit Warning"));
     if (errorFlag & MCP2515::EFLG_RXWAR)
-      Serial.println("Receive Warning");
+      Serial.println(F("Receive Warning"));
     if (errorFlag & MCP2515::EFLG_EWARN)
-      Serial.println("Error Warning");
+      Serial.println(F("Error Warning"));
   }
 
 public:
@@ -46,13 +49,13 @@ public:
     mcp2515.reset();
     if (mcp2515.setBitrate(CAN_SPEED, CLOCK_SPEED) == MCP2515::ERROR_OK)
     {
-      Serial.println("CAN BUS Shield init ok!");
+      Serial.println(F("CAN BUS Shield init ok!"));
       pinMode(CAN_INT_PIN, INPUT);
       mcp2515.setNormalMode();
     }
     else
     {
-      Serial.println("CAN BUS Shield init fail");
+      Serial.println(F("CAN BUS Shield init fail"));
       while (true)
       {
         delay(100);
@@ -92,7 +95,7 @@ public:
     }
     else
     {
-      Serial.println("Error sending message");
+      Serial.println(F("Error sending message"));
       printCANStatus(); // Print status and error flags
 
       Serial.print("Data: ");

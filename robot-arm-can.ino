@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <SPI.h>
+#include "commandMapper.h"
 #include "CANBus.h"
 #include "ServoWrapper.h"
 #include <LittleVector.h>
@@ -13,13 +16,13 @@ bool doSpeedTest = false;
 unsigned long prevTx = 0;
 unsigned long prevRx = 0;
 unsigned long prevRnd = 0;
-unsigned int invlTx = 4000;
-unsigned int invlRx = 50;
-unsigned int invlRnd = 4000;
-unsigned int randomValue = 0;
-unsigned int randomDirection = 0;
-unsigned int randomSpeed = 0;
-unsigned int randomAccel = 0;
+uint16_t invlTx = 4000;
+uint16_t invlRx = 50;
+uint16_t invlRnd = 4000;
+int16_t randomValue = 0;
+uint8_t randomDirection = 0;
+uint16_t randomSpeed = 0;
+uint8_t randomAccel = 0;
 
 void setup()
 {
@@ -27,7 +30,7 @@ void setup()
   while (!Serial)
     ;
   SPI.begin();
-  Serial.println("Hallo, Test from Arm !");
+  Serial.println(F("Hallo, Test from Arm !"));
   canBus.begin();
   delay(1000);
 
@@ -77,10 +80,11 @@ void loop()
   if ((millis() - prevTx) >= invlRnd)
   {
     // servo1.queryMotorPosition();
+    // servo2.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     servo2.queryMotorPosition();
-    servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     // servo3.queryMotorPosition();
     /*
+    servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo3.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
@@ -108,10 +112,12 @@ void loop()
 
 void checkForMessages()
 {
+  /*
   if ((millis() - prevRx) <= invlRx)
   {
     return;
   }
+  */
 
   if (!canBus.listenForMessages(frame))
   {
@@ -125,5 +131,5 @@ void checkForMessages()
       Servos[i]->processCANMessage(frame);
     }
   }
-  prevRx = millis();
+  // prevRx = millis();
 }
