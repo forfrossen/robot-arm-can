@@ -93,7 +93,7 @@ void loop()
   if ((millis() - prevTx) >= invlRnd)
   {
     // servo1.queryMotorPosition();
-    // servo2.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
+    servo2->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     // servo3.queryMotorPosition();
     servo2->queryMotorPosition();
     /*
@@ -141,25 +141,12 @@ void checkForMessages()
   debug.info();
   Serial.print(F("Message received with ID: "));
   Serial.println(frame.can_id, HEX);
-  /*
-    for (LittleVector<Servo42D_CAN>::iterator itr = Servos.begin(); itr != Servos.end();)
-    {
-      if ((*itr).canId == frame.can_id)
-      {
-        Serial.print(F("Processing message for servo with ID: "));
-        Serial.println((*itr).canId, HEX);
-        //(*itr).handleReceivedMessage(&frame);
-      }
-      else
-        ++itr;
-    }
-  */
+
   for (auto servo : Servos)
   {
     if (servo.canId == frame.can_id)
     {
-      // servo.handleReceivedMessage(frame);
-      servo.greet(frame);
+      servo.handleReceivedMessage(frame);
     }
   }
   // prevRx = millis();

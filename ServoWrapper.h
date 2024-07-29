@@ -13,6 +13,9 @@ class Servo42D_CAN
 private:
   CANBus *canBus;
   CommandMapper *commandMapper;
+  int32_t CarryValue = 0;
+  uint16_t EncoderValue = 0;
+  String F5Status = "";
 
 public:
   canid_t canId;
@@ -25,15 +28,6 @@ public:
     Serial.println(canId, HEX);
   }
 
-  void greet(struct can_frame frame)
-  {
-    Debug debug("Servo42D_CAN", __func__);
-    debug.info();
-    Serial.print(F("Processing message for servo with ID: "));
-    Serial.println(frame.can_id, HEX);
-    handleReceivedMessage(frame);
-  }
-
   // void handleReceivedMessage(uint32_t id, uint8_t length, const uint8_t *data)
   void handleReceivedMessage(struct can_frame frame)
   {
@@ -44,31 +38,11 @@ public:
     {
       debug.error();
       Serial.println(F("Error: code is empty!"));
+      return;
     }
-    else
-    {
-      debug.info();
-      Serial.print(F("Processing message for command: "));
-      Serial.println(code, HEX);
-    }
+
     char commandName[50];
     commandMapper->getCommandNameFromCode(code, commandName);
-    if (commandName == nullptr)
-    {
-      debug.error();
-      Serial.println("commandName is nullptr");
-    }
-    else if (sizeof(commandName) == 0)
-    {
-      debug.error();
-      Serial.println("commandName is empty");
-    }
-    else
-    {
-      debug.info();
-      Serial.print("CommandName: ");
-      Serial.println(commandName);
-    }
 
     debug.info();
     Serial.print("ID: ");
@@ -80,11 +54,6 @@ public:
     Serial.print("\tcommandName: ");
     Serial.println(commandName);
 
-    /*
-    sprintf(message, "__func__: %s", __func__);
-
-    message += "commandName: " + *commandName;
-    */
     if (frame.can_id == canId)
     {
       decodeMessage(frame.data, frame.can_dlc);
@@ -101,32 +70,11 @@ public:
     {
       debug.error();
       Serial.println(F("Error: code is empty!"));
+      return;
     }
-    else
-    {
-      debug.info();
-      Serial.print(F("Processing message for command: "));
-      Serial.println(code, HEX);
-    }
+
     char commandName[50];
     commandMapper->getCommandNameFromCode(code, commandName);
-
-    if (commandName == nullptr)
-    {
-      debug.error();
-      Serial.println("commandName is nullptr");
-    }
-    else if (sizeof(commandName) == 0)
-    {
-      debug.error();
-      Serial.println("commandName is empty");
-    }
-    else
-    {
-      debug.info();
-      Serial.print("CommandName: ");
-      Serial.println(commandName);
-    }
 
     debug.info();
     Serial.print("ID: ");
@@ -165,11 +113,7 @@ public:
     data[2] = speed & 0xFF;                                      // Lower 8 bits of speed
     data[3] = acceleration;                                      // Acceleration
                                                                  // data[4] = calculateCRC(data, 5);   // CRC including CAN ID (0x01)
-
-    Serial.println();
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println("class [Servo42D_CAN] - fn: [setSpeedAndAcceleration]");
+    debug.info();
     Serial.print("ID: ");
     Serial.print(canId, HEX);
     Serial.print(", Speed: ");
@@ -177,11 +121,7 @@ public:
     Serial.print(", Acceleration: ");
     Serial.print(acceleration);
     Serial.print(", Direction: ");
-    Serial.print(direction ? "CW" : "CCW");
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println();
+    Serial.println(direction ? "CW" : "CCW");
     sendCommand(data, 4);
   }
 
@@ -197,12 +137,7 @@ public:
     data[5] = (position >> 8) & 0xFF;  // Mittlere 8 Bits der Position
     data[6] = position & 0xFF;         // Untere 8 Bits der Position
                                        // data[7] = calculateCRC(data, 8);   // Checksumme oder reserved (kann auf 0 gesetzt werden)
-    Serial.println();
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println("class [Servo42D_CAN] - fn: [setTargetPosition]");
-    Serial.print("ID: ");
+    debug.info();
     Serial.print(canId, HEX);
     Serial.print(", Position: ");
     Serial.print(position);
@@ -212,10 +147,7 @@ public:
     Serial.print(acceleration);
     Serial.print(", Modus: ");
     Serial.println(absolute ? "Absolut" : "Relativ");
-    Serial.println();
-    Serial.println("************************************************");
-    Serial.println();
-    Serial.println();
+
     sendCommand(data, 7);
   }
 
@@ -300,18 +232,63 @@ public:
       return;
     }
 
-    int32_t carry = (data[1] << 24) | (data[2] << 16) | (data[3] << 8) | data[4];
-    uint16_t value = (data[5] << 8) | data[6];
+    CarryValue = (data[1] << 24) | (data[2] << 16) | (data[3] << 8) | data[4];
+    EncoderValue = (data[5] << 8) | data[6];
     uint8_t crc = data[7];
+
     debug.info();
     Serial.print("Carry value: ");
-    Serial.println(carry);
+    Serial.println(CarryValue);
+
     debug.info();
     Serial.print("Encoder value: ");
-    Serial.println(value);
+    Serial.println(EncoderValue);
+  }
+
+  void handleSetPositionResponse(const __u8 *data, uint8_t length)
+  {
+    Debug debug("Servo42D_CAN", __func__);
+    if (length != 3)
+    {
+
+      debug.error();
+      Serial.println("Invalid response length.");
+      return;
+    }
+    if (data[0] != 0xF5)
+    {
+      debug.error();
+      Serial.println("Unexpected command code: " + String(data[0], HEX));
+      return;
+    }
+
+    // Extract status and CRC
+    uint8_t status = data[1];
+    uint8_t crc = data[2];
+
+    String statusMessage;
+    switch (status)
+    {
+    case 0:
+      F5Status = "Run failed";
+      break;
+    case 1:
+      F5Status = "Run starting";
+      break;
+    case 2:
+      F5Status = "Run complete";
+      break;
+    case 3:
+      F5Status = "End limit stopped";
+      break;
+    default:
+      F5Status = "Unknown status";
+      break;
+    }
+
     debug.info();
-    Serial.print("CRC: ");
-    Serial.println(crc, HEX);
+    Serial.print(F("Motor response to setTargetPosition: "));
+    Serial.println(F5Status);
   }
 
   void decodeMessage(const __u8 *data, uint8_t length)
@@ -319,27 +296,34 @@ public:
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
     Serial.print("Received message ");
+    Serial.print("with code: ");
+    Serial.println(data[0], HEX);
 
     char msgString[128]; // Array to store serial string
 
     if (data[0] == 0x30)
     {
-      Serial.print("with code: ");
-      Serial.println(data[0], HEX);
       decodeEncoderValue(data, length);
+    }
+    else if (data[0] == 0xF5)
+    {
+      handleSetPositionResponse(data, length);
     }
     else
     {
+      debug.error();
       Serial.print("unimplemented code: ");
       Serial.println(data[0], HEX);
+
       debug.info();
       Serial.print("Raw code byte: ");
       Serial.println(data[0]);
+
       for (byte i = 0; i < length; i++)
       {
         sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
         debug.info();
-        Serial.print(msgString);
+        Serial.println(msgString);
       }
     }
   }
