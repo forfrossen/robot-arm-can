@@ -14,13 +14,14 @@ class Debug
 {
 private:
   const char *className;
+  const char *functionName;
 
 public:
-  Debug(const char *name) : className(name) {}
+  Debug(const char *className, const char *functionName) : className(className), functionName(functionName) {}
 
   static const LogLevel GlobalLogLevel = LogLevel::INFO;
 
-  void log(const char *methodName, const LogLevel logLevel, const char *message)
+  void log(const LogLevel logLevel)
   {
     // String logLevelName = LogLevelNames[logLevel];
     // String debugMessage = String("[") + logLevelName + String("]");
@@ -29,35 +30,38 @@ public:
     const char *logLevelName = LogLevelNames[logLevel];
     Serial.print(F("["));
     Serial.print(logLevelName);
-    Serial.print(F("] "));
+    Serial.print(F("\t] "));
+
     Serial.print(className);
     Serial.print("::");
-    Serial.print(methodName);
+    Serial.print(functionName);
+    for (int i = strlen(className) + strlen(functionName); i <= 40; i++)
+    {
+      Serial.print(" ");
+    }
     Serial.print("\t");
-    Serial.print(message);
-    Serial.println();
     // Serial.print(debugMessage);
   }
 
-  void info(const char *methodName, const char *message)
+  void info()
   {
     if (GlobalLogLevel == LogLevel::INFO)
     {
-      log(methodName, LogLevel::INFO, message);
+      log(LogLevel::INFO);
     }
   }
 
-  void warning(const char *methodName, const char *message)
+  void warning()
   {
     if (GlobalLogLevel == LogLevel::INFO || GlobalLogLevel == LogLevel::WARNING)
     {
-      log(methodName, LogLevel::WARNING, message);
+      log(LogLevel::WARNING);
     }
   }
 
-  void error(const char *methodName, const char *message)
+  void error()
   {
-    log(methodName, LogLevel::ERROR, message);
+    log(LogLevel::ERROR);
   }
 
   String getLogLevelName(LogLevel logLevel)

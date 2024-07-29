@@ -16,8 +16,6 @@ class CANBus
 private:
   MCP2515 mcp2515;
 
-  Debug debug = Debug("CANBus");
-
   void printCANStatus()
   {
     uint8_t errorFlag = mcp2515.getErrorFlags();
@@ -42,20 +40,29 @@ private:
   }
 
 public:
-  CANBus(int csPin) : mcp2515(csPin) {}
+  CANBus(int csPin) : mcp2515(csPin)
+  {
+  }
 
   void begin()
   {
+    Debug debug("CANBus", "begin\t");
+    char message[200];
     mcp2515.reset();
+
     if (mcp2515.setBitrate(CAN_SPEED, CLOCK_SPEED) == MCP2515::ERROR_OK)
     {
-      Serial.println(F("CAN BUS Shield init ok!"));
       pinMode(CAN_INT_PIN, INPUT);
       mcp2515.setNormalMode();
+      snprintf(message, sizeof(message), "CAN BUS Shield init ok!");
+      debug.info();
+      Serial.println(message);
     }
     else
     {
-      Serial.println(F("CAN BUS Shield init fail"));
+      snprintf(message, sizeof(message), "CAN BUS Shield init ok!");
+      debug.error();
+      Serial.println(message);
       while (true)
       {
         delay(100);
@@ -109,9 +116,9 @@ public:
     }
   }
 
-  bool listenForMessages(struct can_frame &frame)
+  bool listenForMessages(struct can_frame *frame)
   {
-    if (mcp2515.readMessage(&frame) == MCP2515::ERROR_OK)
+    if (mcp2515.readMessage(frame) == MCP2515::ERROR_OK)
     {
       return true;
     }

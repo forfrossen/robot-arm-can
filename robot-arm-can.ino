@@ -5,13 +5,14 @@
 #include "ServoWrapper.h"
 #include <LittleVector.h>
 
-CANBus canBus(CAN_CS_PIN);
-Servo42D_CAN servo1(0x01, canBus);
-Servo42D_CAN servo2(0x02, canBus);
-Servo42D_CAN servo3(0x03, canBus);
-LittleVector<Servo42D_CAN *> Servos;
+CANBus *canBus;
+CommandMapper *commandMapper;
+Servo42D_CAN *servo1;
+Servo42D_CAN *servo2;
+Servo42D_CAN *servo3;
+LittleVector<Servo42D_CAN> Servos;
+Debug *debug;
 
-struct can_frame frame;
 bool doSpeedTest = false;
 unsigned long prevTx = 0;
 unsigned long prevRx = 0;
@@ -30,13 +31,25 @@ void setup()
   while (!Serial)
     ;
   SPI.begin();
+  Servos.reserve(3);
+  // Serial.println("\n\n");
+  Debug debug("MAIN", __func__);
+  debug.info();
   Serial.println(F("Hallo, Test from Arm !"));
-  canBus.begin();
   delay(1000);
+  canBus = new CANBus(CAN_CS_PIN);
+  delay(1000);
+  canBus->begin();
+  commandMapper = new CommandMapper();
 
-  Servos.push_back(&servo1);
-  Servos.push_back(&servo2);
-  Servos.push_back(&servo3);
+  // Initialisierung der Servo42D_CAN Instanzen
+  servo1 = new Servo42D_CAN(0x01, canBus, commandMapper);
+  servo2 = new Servo42D_CAN(0x02, canBus, commandMapper);
+  servo3 = new Servo42D_CAN(0x03, canBus, commandMapper);
+
+  Servos.push_back(*servo1);
+  Servos.push_back(*servo2);
+  Servos.push_back(*servo3);
 
   /*
   servo3.enableMotor();
@@ -81,8 +94,8 @@ void loop()
   {
     // servo1.queryMotorPosition();
     // servo2.setTargetPosition(randomValue, randomSpeed, randomAccel, true);
-    servo2.queryMotorPosition();
     // servo3.queryMotorPosition();
+    servo2->queryMotorPosition();
     /*
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
@@ -108,27 +121,45 @@ void loop()
 
     prevTx = millis();
   }
+  delay(50);
 }
 
 void checkForMessages()
 {
+  Debug debug("MAIN", __func__);
   /*
   if ((millis() - prevRx) <= invlRx)
   {
     return;
   }
   */
-
-  if (!canBus.listenForMessages(frame))
+  can_frame frame;
+  if (!canBus->listenForMessages(&frame))
   {
     return;
   }
-
-  for (int i = 0; i <= Servos.size(); i++)
-  {
-    if (Servos[i]->canId == frame.can_id)
+  debug.info();
+  Serial.print(F("Message received with ID: "));
+  Serial.println(frame.can_id, HEX);
+  /*
+    for (LittleVector<Servo42D_CAN>::iterator itr = Servos.begin(); itr != Servos.end();)
     {
-      Servos[i]->processCANMessage(frame);
+      if ((*itr).canId == frame.can_id)
+      {
+        Serial.print(F("Processing message for servo with ID: "));
+        Serial.println((*itr).canId, HEX);
+        //(*itr).handleReceivedMessage(&frame);
+      }
+      else
+        ++itr;
+    }
+  */
+  for (auto servo : Servos)
+  {
+    if (servo.canId == frame.can_id)
+    {
+      // servo.handleReceivedMessage(frame);
+      servo.greet(frame);
     }
   }
   // prevRx = millis();
