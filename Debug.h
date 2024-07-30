@@ -36,12 +36,11 @@ public:
     Serial.print(className);
     Serial.print(F("::"));
     Serial.print(functionName);
-    for (int i = strlen(className) + strlen(functionName); i <= 40; i++)
+    for (int i = strlen(className) + strlen(functionName); i <= 45; i++)
     {
       Serial.print(F(" "));
     }
     Serial.print(F("\t"));
-    // Serial.print(debugMessage);
   }
 
   void info()
@@ -63,19 +62,6 @@ public:
   void error()
   {
     log(LogLevel::ERROR);
-  }
-
-  String getLogLevelName(LogLevel logLevel)
-  {
-    switch (logLevel)
-    {
-    case LogLevel::INFO:
-      return "INFO";
-    case LogLevel::WARNING:
-      return "WARNING";
-    case LogLevel::ERROR:
-      return "ERROR";
-    }
   }
 };
 
