@@ -4,7 +4,6 @@
 #include <avr/pgmspace.h>
 #include "Debug.h"
 #include <mcp2515.h>
-#include <LittleVector.h>
 
 struct CommandMap
 {
@@ -61,10 +60,6 @@ __u8 commandIndices[] = {
     0xF3, 0xF4, 0xF5, 0xF6, 0xF7};
 class CommandMapper
 {
-private:
-  // Initialisierung des Arrays mit den gegebenen Daten
-  LittleVector<CommandMap> commands;
-
 public:
   CommandMapper() {}
   // Declaration of the getCommandNameFromCode function
