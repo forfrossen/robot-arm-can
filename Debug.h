@@ -34,13 +34,13 @@ public:
     Serial.print(F("\t] "));
 
     Serial.print(className);
-    Serial.print("::");
+    Serial.print(F("::"));
     Serial.print(functionName);
     for (int i = strlen(className) + strlen(functionName); i <= 40; i++)
     {
-      Serial.print(" ");
+      Serial.print(F(" "));
     }
-    Serial.print("\t");
+    Serial.print(F("\t"));
     // Serial.print(debugMessage);
   }
 

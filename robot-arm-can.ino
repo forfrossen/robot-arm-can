@@ -92,10 +92,31 @@ void loop()
 
   if ((millis() - prevTx) >= invlRnd)
   {
-    // servo1.queryMotorPosition();
-    servo2->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
-    // servo3.queryMotorPosition();
+    servo1->queryMotorPosition();
+    delay(50);
+    checkForMessages();
+
     servo2->queryMotorPosition();
+    delay(50);
+    checkForMessages();
+
+    servo3->queryMotorPosition();
+    delay(50);
+    checkForMessages();
+    // servo1.queryMotorPosition();
+
+    servo1->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
+    delay(50);
+    checkForMessages();
+
+    servo2->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
+    delay(50);
+    checkForMessages();
+
+    servo3->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
+    delay(50);
+    checkForMessages();
+    // servo3.queryMotorPosition();
     /*
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
@@ -121,7 +142,7 @@ void loop()
 
     prevTx = millis();
   }
-  delay(50);
+  delay(10);
 }
 
 void checkForMessages()

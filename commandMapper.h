@@ -47,12 +47,12 @@ static const char cmd31[] PROGMEM = "Relative position control mode";
 static const char cmd32[] PROGMEM = "Absolute position control mode";
 static const char cmd33[] PROGMEM = "Speed mode command";
 static const char cmd34[] PROGMEM = "Stop motor";
-static const char cmd35[] PROGMEM = "Unknown Command";
+static const char unknownCommand[] PROGMEM = "Unknown command";
 static const char *const commandNames[36] PROGMEM = {
     cmd0, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8, cmd9,
     cmd10, cmd11, cmd12, cmd13, cmd14, cmd15, cmd16, cmd17, cmd18, cmd19,
     cmd20, cmd21, cmd22, cmd23, cmd24, cmd25, cmd26, cmd27, cmd28, cmd29,
-    cmd30, cmd31, cmd32, cmd33, cmd34, cmd35};
+    cmd30, cmd31, cmd32, cmd33, cmd34, unknownCommand};
 
 __u8 commandIndices[] = {
     0x30, 0x31, 0x32, 0x33, 0x34, 0x39, 0x3A, 0x3B, 0x3D, 0x3E,
@@ -67,104 +67,29 @@ private:
 
 public:
   CommandMapper() {}
-  /*
-{
-
-      // Initialisierung der CommandMap-Objekte und Hinzufügen zum LittleVector
-      commands.push_back({0x30, cmd0});
-      commands.push_back({0x31, cmd1});
-      commands.push_back({0x32, cmd2});
-      commands.push_back({0x33, cmd3});
-      commands.push_back({0x34, cmd4});
-      commands.push_back({0x39, cmd5});
-      commands.push_back({0x3A, cmd6});
-      commands.push_back({0x3B, cmd7});
-      commands.push_back({0x3D, cmd8});
-      commands.push_back({0x3E, cmd9});
-      commands.push_back({0x80, cmd10});
-      commands.push_back({0x82, cmd11});
-      commands.push_back({0x83, cmd12});
-      commands.push_back({0x84, cmd13});
-      commands.push_back({0x85, cmd14});
-      commands.push_back({0x86, cmd15});
-      commands.push_back({0x87, cmd16});
-      commands.push_back({0x88, cmd17});
-      commands.push_back({0x89, cmd18});
-      commands.push_back({0x8A, cmd19});
-      commands.push_back({0x8B, cmd20});
-      commands.push_back({0x8C, cmd21});
-      commands.push_back({0x8D, cmd22});
-      commands.push_back({0x8F, cmd23});
-      commands.push_back({0x90, cmd24});
-      commands.push_back({0x91, cmd25});
-      commands.push_back({0x92, cmd26});
-      commands.push_back({0x94, cmd27});
-      commands.push_back({0xF1, cmd28});
-      commands.push_back({0xF2, cmd29});
-      commands.push_back({0xF3, cmd30});
-      commands.push_back({0xF4, cmd31});
-      commands.push_back({0xF5, cmd32});
-      commands.push_back({0xF6, cmd33});
-      commands.push_back({0xF7, cmd34});
-      commands.push_back({0x00, cmd35});
-}
-  */
   // Declaration of the getCommandNameFromCode function
-  bool getCommandNameFromCode(__u8 code, char *commandName)
+  void getCommandNameFromCode(__u8 code, char *commandName)
   {
-    static const char *unknownCommand = "Unknown command"; // Statische Variable
-
     Debug debug("CommandMapper", __func__);
+
     debug.info();
     Serial.print(F("Looking for code: "));
     Serial.println(code, HEX);
 
     unsigned int numCommands = sizeof(commandIndices) / sizeof(commandIndices[0]);
-    for (unsigned int i = 0; i < numCommands; ++i)
+    unsigned int i = 0;
+
+    do
     {
       if (commandIndices[i] == code)
-      {
-        strcpy_P(commandName, (char *)pgm_read_ptr(&(commandNames[i])));
-        debug.info();
-        Serial.print(F("Found command name: "));
-        Serial.println(commandName);
-        return true;
-      }
-    }
-    commandName = "Unknown Command";
-    return false;
-    /*
-char buffer[50];
-for (size_t i = 0; i < commands.size(); ++i)
-{
-  Serial.print("Command Number: 0x");
-  Serial.print(commands[i].commandNum, HEX);
-  Serial.print(", Command Name: ");
+        break;
+      i++;
+    } while (i < numCommands);
 
-  // Lesen des Befehlsnamens aus dem PROGMEM
-  strncpy_P(buffer, commands[i].commandName, sizeof(buffer));
-  buffer[sizeof(buffer) - 1] = '\0'; // Sicherstellen, dass der String nullterminiert ist
-
-  Serial.println(buffer);
-}
-
-char buffer[50];
-for (auto command : commands)
-{
-  if (command.commandNum == code)
-  {
-    strcpy_P(buffer, (char *)pgm_read_ptr(&(command.commandName)));
-    buffer[sizeof(buffer) - 1] = '\0'; // Sicherstellen, dass der String nullterminiert ist
+    strcpy_P(commandName, (char *)pgm_read_ptr(&(commandNames[i])));
     debug.info();
     Serial.print(F("Found command name: "));
-    Serial.println(buffer);
-    return buffer;
-  }
-}
-strcpy_P(buffer, (char *)pgm_read_ptr(&(commands[35].commandName)));
-buffer[sizeof(buffer) - 1] = '\0'; // Sicherstellen, dass der String nullterminiert ist
-return buffer;
-*/
+    Serial.println(commandName);
   }
 };
 
