@@ -1,6 +1,6 @@
 {
-    "port": "COM5",
     "sketch": "robot-arm-can.ino",
     "output": "../ArduinoOutput",
-    "board": "arduino:avr:uno"
+    "board": "arduino:renesas_uno:unor4wifi",
+    "port": "COM7"
 }

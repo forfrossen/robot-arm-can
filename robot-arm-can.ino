@@ -1,10 +1,13 @@
-#include <Arduino.h>
-#include <SPI.h>
+#include "utils_wifi.h"
+#include "utils_webserver.h"
 #include "commandMapper.h"
 #include "CANBus.h"
 #include "ServoWrapper.h"
+#include "WiFiS3.h"
 #include <LittleVector.h>
+const char compile_date[] = __DATE__ " " __TIME__;
 
+WiFiServer server(80);
 CANBus *canBus;
 CommandMapper *commandMapper;
 Servo42D_CAN *servo1;
@@ -32,10 +35,16 @@ void setup()
     ;
   SPI.begin();
   Servos.reserve(3);
-  // Serial.println("\n\n");
+  delay(100);
   Debug debug("MAIN", __func__);
   debug.info();
   Serial.println(F("Hallo, Test from Arm !"));
+  debug.info();
+  Serial.print(F("Build date: "));
+  Serial.println(compile_date);
+
+  connectWifi();
+  server.begin();
   delay(1000);
   canBus = new CANBus(CAN_CS_PIN);
   delay(1000);
@@ -71,6 +80,11 @@ void setup()
 
 void loop()
 {
+  WiFiClient client = server.available();
+  if (client)
+  {
+    webserver(client);
+  }
 
   checkForMessages();
 

@@ -18,25 +18,31 @@ private:
 
   void printCANStatus()
   {
+    Debug debug("CANBus", __func__);
     uint8_t errorFlag = mcp2515.getErrorFlags();
 
+    debug.error();
     Serial.print(F("Error Flag: 0x"));
     Serial.println(errorFlag, HEX);
+    debug.error();
+    Serial.print(F("Errors:"));
 
     if (errorFlag & MCP2515::EFLG_RX0OVR)
-      Serial.println(F("Receive Buffer 0 Overflow"));
+      Serial.print(F(" Receive Buffer 0 Overflow"));
     if (errorFlag & MCP2515::EFLG_TXEP)
-      Serial.println(F("Transmit Error Passive"));
+      Serial.print(F(", Transmit Error Passive"));
     if (errorFlag & MCP2515::EFLG_TXBO)
-      Serial.println(F("Transmit Bus-Off"));
+      Serial.print(F(", Transmit Bus-Off"));
     if (errorFlag & MCP2515::EFLG_RXEP)
-      Serial.println(F("Receive Error Passive"));
+      Serial.print(F(", Receive Error Passive"));
     if (errorFlag & MCP2515::EFLG_TXWAR)
-      Serial.println(F("Transmit Warning"));
+      Serial.print(F(", Transmit Warning"));
     if (errorFlag & MCP2515::EFLG_RXWAR)
-      Serial.println(F("Receive Warning"));
+      Serial.print(F(", Receive Warning"));
     if (errorFlag & MCP2515::EFLG_EWARN)
-      Serial.println(F("Error Warning"));
+      Serial.print(F(", Error Warning"));
+
+    Serial.println();
   }
 
 public:
@@ -47,22 +53,19 @@ public:
   void begin()
   {
     Debug debug("CANBus", "begin\t");
-    char message[200];
     mcp2515.reset();
 
     if (mcp2515.setBitrate(CAN_SPEED, CLOCK_SPEED) == MCP2515::ERROR_OK)
     {
       pinMode(CAN_INT_PIN, INPUT);
       mcp2515.setNormalMode();
-      snprintf(message, sizeof(message), "CAN BUS Shield init ok!");
       debug.info();
-      Serial.println(message);
+      Serial.println(F("CAN BUS Shield init ok!"));
     }
     else
     {
-      snprintf(message, sizeof(message), "CAN BUS Shield init ok!");
       debug.error();
-      Serial.println(message);
+      Serial.println(F("CAN BUS Shield could not be initialized!"));
       while (true)
       {
         delay(100);
@@ -82,6 +85,7 @@ public:
 
   bool sendCANMessage(uint32_t id, uint8_t length, uint8_t *data)
   {
+    Debug debug("CANBus", __func__);
     if (length >= 7)
     {
       length = 7; // Limit length to 7 to make space for CRC
@@ -102,9 +106,11 @@ public:
     }
     else
     {
+      debug.error();
       Serial.println(F("Error sending message"));
       printCANStatus(); // Print status and error flags
 
+      debug.error();
       Serial.print("Data: ");
       for (int i = 0; i < frame.can_dlc; i++)
       {

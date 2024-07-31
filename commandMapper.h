@@ -1,6 +1,5 @@
 #ifndef COMMANDMAPPER_H
 #define COMMANDMAPPER_H
-#include <Arduino.h>
 #include <avr/pgmspace.h>
 #include "Debug.h"
 #include <mcp2515.h>
