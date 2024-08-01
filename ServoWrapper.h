@@ -1,10 +1,10 @@
 #ifndef SERVO42D_CAN_H
 #define SERVO42D_CAN_H
 
-#include "CANBus.h" // Include CANBus.h with include guards
-#include "commandMapper.h"
+#include "CAN.h" // Include CANBus.h with include guards
+#include "utils/commandMapper.h"
 #include "Debug.h"
-#include <mcp2515.h>
+#include <Arduino_CAN.h>
 
 #define MAX_PROCESSED_MESSAGES 10 // Define the maximum number of processed messages to track
 
@@ -18,9 +18,9 @@ private:
   String F5Status = "";
 
 public:
-  canid_t canId;
+  uint32_t canId;
 
-  Servo42D_CAN(canid_t id, CANBus *bus, CommandMapper *commandMapper) : canId(id), canBus(bus), commandMapper(commandMapper)
+  Servo42D_CAN(uint32_t id, CANBus *bus, CommandMapper *commandMapper) : canId(id), canBus(bus), commandMapper(commandMapper)
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
@@ -29,7 +29,7 @@ public:
   }
 
   // void handleReceivedMessage(uint32_t id, uint8_t length, const uint8_t *data)
-  void handleReceivedMessage(struct can_frame frame)
+  void handleReceivedMessage(CanMsg frame)
   {
     Debug debug("Servo42D_CAN", __func__);
     __u8 code = frame.data[0];
@@ -48,15 +48,15 @@ public:
     Serial.print(F("ID: "));
     Serial.print(canId);
     Serial.print(F("\t length: "));
-    Serial.print(frame.can_dlc, HEX);
+    Serial.print(frame.data_length, HEX);
     Serial.print(F("\tcode: "));
     Serial.print(frame.data[0], HEX);
     Serial.print(F("\tcommandName: "));
     Serial.println(commandName);
 
-    if (frame.can_id == canId)
+    if (frame.getStandardId() == canId)
     {
-      decodeMessage(frame.data, frame.can_dlc);
+      decodeMessage(frame.data, frame.data_length);
     }
   }
 
@@ -107,7 +107,7 @@ public:
       speed = 3000; // Clamp speed to maximum value
     }
 
-    uint8_t data[4];
+    uint8_t data[3];
     data[0] = 0xF6;                                              // Command code for setting speed and acceleration
     data[1] = (direction ? 0x80 : 0x00) | ((speed >> 8) & 0x0F); // Direction bit in the highest bit and upper 4 bits of speed
     data[2] = speed & 0xFF;                                      // Lower 8 bits of speed
@@ -122,13 +122,13 @@ public:
     Serial.print(acceleration);
     Serial.print(F(", Direction: "));
     Serial.println(direction ? F("CW") : F("CCW"));
-    sendCommand(data, 4);
+    sendCommand(data, 3);
   }
 
   void setTargetPosition(uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
   {
     Debug debug("Servo42D_CAN", __func__);
-    uint8_t data[8];
+    uint8_t data[7];
     data[0] = absolute ? 0xF5 : 0xF4;  // Befehlscode für Position mode4: absolute motion by axis
     data[1] = (speed >> 8) & 0x7F;     // Combine direction bit with the upper 7 bits of speed
     data[2] = speed & 0xFF;            // Lower 8 bits of speed
@@ -184,7 +184,7 @@ public:
   {
     uint8_t data[1] = {0x30};
 
-    sendCommand(data, 2);
+    sendCommand(data, 1);
   }
 
   void handleQueryStatusResponse(uint8_t *data)

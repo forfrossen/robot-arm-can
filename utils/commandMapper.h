@@ -1,7 +1,7 @@
 #ifndef COMMANDMAPPER_H
 #define COMMANDMAPPER_H
 #include <avr/pgmspace.h>
-#include "Debug.h"
+#include "../Debug.h"
 #include <mcp2515.h>
 
 struct CommandMap

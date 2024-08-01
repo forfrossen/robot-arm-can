@@ -1,10 +1,14 @@
-#include "utils_wifi.h"
-#include "utils_webserver.h"
-#include "commandMapper.h"
-#include "CANBus.h"
-#include "ServoWrapper.h"
-#include "WiFiS3.h"
+#include <Arduino_CAN.h>
+#include <Arduino_CAN.h>
 #include <LittleVector.h>
+
+#include "ServoWrapper.h"
+#include "CAN.h"
+#include "WiFiS3.h"
+
+#include "utils/wifi.h"
+#include "utils/webserver.h"
+#include "utils/commandMapper.h"
 const char compile_date[] = __DATE__ " " __TIME__;
 
 WiFiServer server(80);
@@ -31,6 +35,7 @@ uint8_t randomAccel = 0;
 void setup()
 {
   Serial.begin(115200);
+
   while (!Serial)
     ;
   SPI.begin();
@@ -43,10 +48,10 @@ void setup()
   Serial.print(F("Build date: "));
   Serial.println(compile_date);
 
-  connectWifi();
-  server.begin();
-  delay(1000);
-  canBus = new CANBus(CAN_CS_PIN);
+  // connectWifi();
+  // server.begin();
+  // delay(1000);
+  canBus = new CANBus();
   delay(1000);
   canBus->begin();
   commandMapper = new CommandMapper();
@@ -80,11 +85,13 @@ void setup()
 
 void loop()
 {
+  /*
   WiFiClient client = server.available();
   if (client)
   {
     webserver(client);
   }
+  */
 
   checkForMessages();
 
@@ -117,7 +124,6 @@ void loop()
     servo3->queryMotorPosition();
     delay(50);
     checkForMessages();
-    // servo1.queryMotorPosition();
 
     servo1->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     delay(50);
@@ -130,7 +136,7 @@ void loop()
     servo3->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     delay(50);
     checkForMessages();
-    // servo3.queryMotorPosition();
+
     /*
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
@@ -168,21 +174,25 @@ void checkForMessages()
     return;
   }
   */
-  can_frame frame;
-  if (!canBus->listenForMessages(&frame))
+  if (CAN.available())
   {
-    return;
-  }
-  debug.info();
-  Serial.print(F("Message received with ID: "));
-  Serial.println(frame.can_id, HEX);
-
-  for (auto servo : Servos)
-  {
-    if (servo.canId == frame.can_id)
+    CanMsg const msg = CAN.read();
+    debug.info();
+    Serial.print(F("Message received with ID: "));
+    Serial.println(msg.getExtendedId(), HEX);
+    for (auto servo : Servos)
     {
-      servo.handleReceivedMessage(frame);
+      if (servo.canId == msg.getExtendedId())
+      {
+        servo.handleReceivedMessage(msg);
+      }
     }
+  }
+  else
+  {
+    // debug.info();
+    // Serial.println(F("No CAN message available"));
+    delay(100);
   }
   // prevRx = millis();
 }

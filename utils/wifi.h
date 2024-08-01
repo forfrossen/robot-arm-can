@@ -1,8 +1,8 @@
 #ifndef UTILS_WIFI
 #define UTILS_WIFI
 #include "WiFiS3.h"
-#include "Debug.h"
-#include "arduino_secrets.h"
+#include "../Debug.h"
+#include "../inc/arduino_secrets.h"
 #include "Arduino_LED_Matrix.h" //Include the LED_Matrix library
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h

@@ -49,6 +49,9 @@
     "type_traits": "cpp",
     "typeinfo": "cpp",
     "utility": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "array": "cpp",
+    "tuple": "cpp",
+    "string_view": "cpp"
   }
 }

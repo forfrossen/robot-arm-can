@@ -1,5 +1,5 @@
-#ifndef CANBUS_H
-#define CANBUS_H
+#ifndef CANBUS_H_old
+#define CANBUS_H_old
 
 #include <mcp2515.h>
 #include <SPI.h>
@@ -132,4 +132,4 @@ public:
   }
 };
 
-#endif // CANBUS_H
+#endif // CANBUS_H_old_old
