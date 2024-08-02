@@ -15,7 +15,7 @@ public:
   {
     Debug debug("SetHomeCommand", __func__);
 
-    uint8_t data[5];                   // Command code + parameters + CRC
+    uint8_t data[6];                   // Command code + parameters + CRC
     data[0] = 0x90;                    // Set Home command code
     data[1] = homeTrig;                // Home trigger level: 0 = Low, 1 = High
     data[2] = homeDir;                 // Home direction: 0 = CW, 1 = CCW
@@ -35,6 +35,6 @@ public:
     Serial.print(F(", End Limit: "));
     Serial.println(endLimit ? F("Enabled") : F("Disabled"));
 
-    servo->sendCommand(data, 5);
+    servo->sendCommand(data, 6);
   }
 };
