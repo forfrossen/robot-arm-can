@@ -1,0 +1,8 @@
+
+
+{
+  "handlers": {
+    "0x82": "handleSetWorkModeResponse",
+    "0x83": "handleSetCurrentResponse"
+  }
+}

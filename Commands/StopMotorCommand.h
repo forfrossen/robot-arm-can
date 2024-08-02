@@ -1,3 +1,10 @@
+#ifndef STOP_MOTOR_COMMAND_H
+#define STOP_MOTOR_COMMAND_H
+
+#include "Command.h"
+#include "../ServoWrapper.h"
+#include "../Debug.h"
+
 class StopMotorCommand : public Command
 {
 private:
@@ -17,3 +24,5 @@ public:
     servo->sendCommand(data, 1);
   }
 };
+
+#endif // STOP_MOTOR_COMMAND_H

@@ -15,6 +15,7 @@ class Debug
 private:
   const char *className;
   const char *functionName;
+  // std::vector<String> messageBuffer;
 
 public:
   Debug(const char *className, const char *functionName) : className(className), functionName(functionName) {}

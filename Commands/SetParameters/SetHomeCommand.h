@@ -1,3 +1,9 @@
+#ifndef SET_HOME_COMMAND_H
+#define SET_HOME_COMMAND_H
+
+#include "../Command.h"
+#include "../../ServoWrapper.h"
+#include "../../Debug.h"
 class SetHomeCommand : public Command
 {
 private:
@@ -38,3 +44,4 @@ public:
     servo->sendCommand(data, 6);
   }
 };
+#endif // SET_HOME_COMMAND_H

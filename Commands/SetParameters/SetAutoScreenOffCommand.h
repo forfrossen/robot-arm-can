@@ -1,8 +1,9 @@
 #ifndef SET_AUTO_SCREEN_OFF_COMMAND_H
 #define SET_AUTO_SCREEN_OFF_COMMAND_H
 
-#include "Command.h"
-#include "Servo42D_CAN.h"
+#include "../Command.h"
+#include "../../ServoWrapper.h"
+#include "../../Debug.h"
 
 class SetAutoScreenOffCommand : public Command
 {

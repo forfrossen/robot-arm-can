@@ -1,12 +1,17 @@
 #ifndef SERVO42D_CAN_H
 #define SERVO42D_CAN_H
 
-#include "CAN.h" // Include CANBus.h with include guards
-#include "utils/commandMapper.h"
+#include <SPI.h>
+#include "CAN.h"
+#include "utils/CommandMapper.h"
 #include "Debug.h"
 #include <Arduino_CAN.h>
+#include <map>
+#include <functional>
+#include "utils/ResponseHandler.h"
+#include "ResponseHandlerRegistry.h"
 
-#define MAX_PROCESSED_MESSAGES 10 // Define the maximum number of processed messages to track
+#define MAX_PROCESSED_MESSAGES 10
 
 class Servo42D_CAN
 {
@@ -16,6 +21,7 @@ private:
   int32_t CarryValue = 0;
   uint16_t EncoderValue = 0;
   String F5Status = "";
+  ResponseHandlerRegistry responseHandlerRegistry;
 
 public:
   uint32_t canId;
@@ -26,13 +32,29 @@ public:
     debug.info();
     Serial.print(F("New Servo42D_CAN object created with CAN ID: "));
     Serial.println(canId, HEX);
+
+    // registerResponseHandler(0x01, myResponseHandler); // Register handler for command code 0x01
+
+    // Initialize the response handlers
+  }
+
+  static void initializeResponseHandlers();
+
+  void registerResponseHandler(uint8_t commandCode, std::function<void(uint8_t *, uint8_t)> handler)
+  {
+    responseHandlerRegistry.registerHandler(commandCode, handler);
+  }
+
+  void handleResponse(uint8_t *data, uint8_t length)
+  {
+    responseHandlerRegistry.handleResponse(data, length);
   }
 
   // void handleReceivedMessage(uint32_t id, uint8_t length, const uint8_t *data)
   void handleReceivedMessage(CanMsg frame)
   {
     Debug debug("Servo42D_CAN", __func__);
-    __u8 code = frame.data[0];
+    uint8_t code = frame.data[0];
 
     if (!code)
     {
@@ -64,7 +86,7 @@ public:
   void sendCommand(uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
-    __u8 code = data[0];
+    uint8_t code = data[0];
 
     if (!code)
     {
@@ -98,7 +120,7 @@ public:
     }
   }
 
-  void handleQueryStatusResponse(const __u8 *data, uint8_t length)
+  void handleQueryStatusResponse(const uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
@@ -134,7 +156,7 @@ public:
     }
   }
 
-  void handleQueryMotorPositionResponse(const __u8 *data, uint8_t length)
+  void handleQueryMotorPositionResponse(const uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
     if (length != 8 || data[0] != 0x30)
@@ -157,7 +179,7 @@ public:
     Serial.println(EncoderValue);
   }
 
-  void handleSetPositionResponse(const __u8 *data, uint8_t length)
+  void handleSetPositionResponse(const uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
     if (length != 3)
@@ -204,7 +226,7 @@ public:
     Serial.println(F5Status);
   }
 
-  void handeSetHomeResponse(const __u8 *data, uint8_t length)
+  void handeSetHomeResponse(const uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
 
@@ -261,7 +283,7 @@ public:
     // }
   }
 
-  void decodeMessage(const __u8 *data, uint8_t length)
+  void decodeMessage(const uint8_t *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();

@@ -1,8 +1,9 @@
 #ifndef COMMANDMAPPER_H
 #define COMMANDMAPPER_H
 #include <avr/pgmspace.h>
+#include <map>
+#include <string>
 #include "../Debug.h"
-#include <mcp2515.h>
 
 struct CommandMap
 {
@@ -46,23 +47,58 @@ static const char cmd32[] PROGMEM = "Absolute position control mode";
 static const char cmd33[] PROGMEM = "Speed mode command";
 static const char cmd34[] PROGMEM = "Stop motor";
 static const char unknownCommand[] PROGMEM = "Unknown command";
-static const char *const commandNames[36] PROGMEM = {
-    cmd0, cmd1, cmd2, cmd3, cmd4, cmd5, cmd6, cmd7, cmd8, cmd9,
-    cmd10, cmd11, cmd12, cmd13, cmd14, cmd15, cmd16, cmd17, cmd18, cmd19,
-    cmd20, cmd21, cmd22, cmd23, cmd24, cmd25, cmd26, cmd27, cmd28, cmd29,
-    cmd30, cmd31, cmd32, cmd33, cmd34, unknownCommand};
 
-__u8 commandIndices[] = {
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x39, 0x3A, 0x3B, 0x3D, 0x3E,
-    0x80, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A,
-    0x8B, 0x8C, 0x8D, 0x8F, 0x90, 0x91, 0x92, 0x94, 0xF1, 0xF2,
-    0xF3, 0xF4, 0xF5, 0xF6, 0xF7};
 class CommandMapper
 {
+
+private:
+  std::map<uint8_t, const char *>
+      commandMap;
+
 public:
-  CommandMapper() {}
+  CommandMapper()
+  {
+    commandMap = {
+        {0x30, cmd0},
+        {0x31, cmd1},
+        {0x32, cmd2},
+        {0x33, cmd3},
+        {0x34, cmd4},
+        {0x39, cmd5},
+        {0x3A, cmd6},
+        {0x3B, cmd7},
+        {0x3D, cmd8},
+        {0x3E, cmd9},
+        {0x80, cmd10},
+        {0x82, cmd11},
+        {0x83, cmd12},
+        {0x84, cmd13},
+        {0x85, cmd14},
+        {0x86, cmd15},
+        {0x87, cmd16},
+        {0x88, cmd17},
+        {0x89, cmd18},
+        {0x8A, cmd19},
+        {0x8B, cmd20},
+        {0x8C, cmd21},
+        {0x8D, cmd22},
+        {0x8F, cmd23},
+        {0x90, cmd24},
+        {0x91, cmd25},
+        {0x92, cmd26},
+        {0x94, cmd27},
+        {0xF1, cmd28},
+        {0xF2, cmd29},
+        {0xF3, cmd30},
+        {0xF4, cmd31},
+        {0xF5, cmd32},
+        {0xF6, cmd33},
+        {0xF7, cmd34},
+        {0xFF, unknownCommand}};
+  }
+
   // Declaration of the getCommandNameFromCode function
-  void getCommandNameFromCode(__u8 code, char *commandName)
+  void getCommandNameFromCode(uint8_t code, char *commandName)
   {
     Debug debug("CommandMapper", __func__);
 
@@ -70,21 +106,19 @@ public:
     Serial.print(F("Looking for code: "));
     Serial.println(code, HEX);
 
-    unsigned int numCommands = sizeof(commandIndices) / sizeof(commandIndices[0]);
-    unsigned int i = 0;
-
-    do
+    auto it = commandMap.find(code);
+    if (it != commandMap.end())
     {
-      if (commandIndices[i] == code)
-        break;
-      i++;
-    } while (i < numCommands);
+      strcpy_P(commandName, it->second);
+    }
+    else
+    {
+      strcpy_P(commandName, unknownCommand);
+    }
 
-    strcpy_P(commandName, (char *)pgm_read_ptr(&(commandNames[i])));
     debug.info();
     Serial.print(F("Found command name: "));
     Serial.println(commandName);
-  }
+  };
 };
-
 #endif

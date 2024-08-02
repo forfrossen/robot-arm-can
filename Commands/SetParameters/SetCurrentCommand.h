@@ -1,8 +1,9 @@
 #ifndef SET_CURRENT_COMMAND_H
 #define SET_CURRENT_COMMAND_H
 
-#include "Command.h"
-#include "Servo42D_CAN.h"
+#include "../Command.h"
+#include "../../ServoWrapper.h"
+#include "../../Debug.h"
 
 class SetCurrentCommand : public Command
 {

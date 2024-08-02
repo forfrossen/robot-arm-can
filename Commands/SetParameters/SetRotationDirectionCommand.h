@@ -1,8 +1,9 @@
 #ifndef SET_ROTATION_DIRECTION_COMMAND_H
 #define SET_ROTATION_DIRECTION_COMMAND_H
 
-#include "Command.h"
-#include "Servo42D_CAN.h"
+#include "../Command.h"
+#include "../../ServoWrapper.h"
+#include "../../Debug.h"
 
 class SetRotationDirectionCommand : public Command
 {

@@ -1,33 +1,40 @@
 #include <Arduino_CAN.h>
-#include <Arduino_CAN.h>
-#include <LittleVector.h>
 
-#include "ServoWrapper.h"
 #include "CAN.h"
-#include "WiFiS3.h"
+#include "ServoWrapper.h"
+#include <map>
+
+#define USE_WIFI
+#ifdef USE_WIFI
 
 #include "utils/wifi.h"
 #include "utils/webserver.h"
+#endif
+
 #include "utils/commandMapper.h"
 
 #include "Commands/Command.h"
-#include "Commands/SetHomeCommand.h"
+#include "Commands/SetParameters/SetHomeCommand.h"
 #include "Commands/RunMotorInSpeedModeCommand.h"
 #include "Commands/StopMotorCommand.h"
-#include "Commands/QueryMotorStatusCommand.h"
-#include "Commands/QueryMotorPositionCommand.h"
+#include "Commands/Query/QueryMotorStatusCommand.h"
+#include "Commands/Query/QueryMotorPositionCommand.h"
 #include "Commands/SetTargetPositionCommand.h"
 
 const char compile_date[] = __DATE__ " " __TIME__;
 
+#ifdef USE_WIFI
 WiFiServer server(80);
+#endif
+
 CANBus *canBus;
 CommandMapper *commandMapper;
 Servo42D_CAN *servo1;
 Servo42D_CAN *servo2;
 Servo42D_CAN *servo3;
-LittleVector<Servo42D_CAN> Servos;
 Debug *debug;
+
+std::map<uint8_t, Servo42D_CAN *> Servos; // Replace LittleVector with std::map
 
 bool doSpeedTest = false;
 unsigned long prevTx = 0;
@@ -48,18 +55,22 @@ void setup()
   while (!Serial)
     ;
   SPI.begin();
-  Servos.reserve(3);
   delay(100);
+
   Debug debug("MAIN", __func__);
   debug.info();
   Serial.println(F("Hallo, Test from Arm !"));
+
   debug.info();
   Serial.print(F("Build date: "));
   Serial.println(compile_date);
 
-  // connectWifi();
-  // server.begin();
-  // delay(1000);
+#ifdef USE_WIFI
+  connectWifi();
+  server.begin();
+  delay(1000);
+#endif
+
   canBus = new CANBus();
   delay(1000);
   canBus->begin();
@@ -70,9 +81,9 @@ void setup()
   servo2 = new Servo42D_CAN(0x02, canBus, commandMapper);
   servo3 = new Servo42D_CAN(0x03, canBus, commandMapper);
 
-  Servos.push_back(*servo1);
-  Servos.push_back(*servo2);
-  Servos.push_back(*servo3);
+  Servos[0x01] = servo1;
+  Servos[0x02] = servo2;
+  Servos[0x03] = servo3;
 
   /*
   servo3.enableMotor();
@@ -94,13 +105,13 @@ void setup()
 
 void loop()
 {
-  /*
+#ifdef USE_WIFI
   WiFiClient client = server.available();
   if (client)
   {
     webserver(client);
   }
-  */
+#endif
 
   checkForMessages();
 
@@ -122,9 +133,15 @@ void loop()
 
   if ((millis() - prevTx) >= invlRnd)
   {
-    for (auto servo : Servos)
+    for (auto &pair : Servos)
     {
-      Command *queryMotorPosition = new QueryMotorPositionCommand(&servo);
+      Command *setTargetPositionCommand = new SetTargetPositionCommand(pair.second, randomValue, randomSpeed, randomAccel, true);
+      setTargetPositionCommand->execute();
+      delay(50);
+      checkForMessages();
+      delay(100);
+
+      Command *queryMotorPosition = new QueryMotorPositionCommand(pair.second);
       queryMotorPosition->execute();
       delete queryMotorPosition;
       delay(50);
@@ -198,20 +215,13 @@ void checkForMessages()
     CanMsg const msg = CAN.read();
     debug.info();
     Serial.print(F("Message received with ID: "));
-    Serial.println(msg.getExtendedId(), HEX);
-    for (auto servo : Servos)
+    Serial.println(msg.getStandardId(), HEX);
+
+    auto it = Servos.find(msg.getStandardId());
+    if (it != Servos.end())
     {
-      if (servo.canId == msg.getExtendedId())
-      {
-        servo.handleReceivedMessage(msg);
-      }
+      it->second->handleReceivedMessage(msg);
     }
-  }
-  else
-  {
-    // debug.info();
-    // Serial.println(F("No CAN message available"));
-    delay(100);
   }
   // prevRx = millis();
 }
