@@ -9,6 +9,15 @@
 #include "utils/wifi.h"
 #include "utils/webserver.h"
 #include "utils/commandMapper.h"
+
+#include "Commands/Command.h"
+#include "Commands/SetHomeCommand.h"
+#include "Commands/RunMotorInSpeedModeCommand.h"
+#include "Commands/StopMotorCommand.h"
+#include "Commands/QueryMotorStatusCommand.h"
+#include "Commands/QueryMotorPositionCommand.h"
+#include "Commands/SetTargetPositionCommand.h"
+
 const char compile_date[] = __DATE__ " " __TIME__;
 
 WiFiServer server(80);
@@ -113,6 +122,16 @@ void loop()
 
   if ((millis() - prevTx) >= invlRnd)
   {
+    for (auto servo : Servos)
+    {
+      Command *queryMotorPosition = new QueryMotorPositionCommand(&servo);
+      queryMotorPosition->execute();
+      delete queryMotorPosition;
+      delay(50);
+      checkForMessages();
+    }
+    /*
+
     servo1->queryMotorPosition();
     delay(50);
     checkForMessages();
@@ -136,7 +155,7 @@ void loop()
     servo3->setTargetPosition(randomValue, randomSpeed, randomAccel, true);
     delay(50);
     checkForMessages();
-
+*/
     /*
     servo2.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);
     servo1.setSpeedAndAcceleration(randomSpeed, randomDirection, randomAccel);

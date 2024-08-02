@@ -98,96 +98,7 @@ public:
     }
   }
 
-  // Set Speed and Acceleration together
-  void setSpeedAndAcceleration(uint16_t speed, uint8_t acceleration, bool direction = true)
-  {
-    Debug debug("Servo42D_CAN", __func__);
-    if (speed > 3000)
-    {
-      speed = 3000; // Clamp speed to maximum value
-    }
-
-    uint8_t data[3];
-    data[0] = 0xF6;                                              // Command code for setting speed and acceleration
-    data[1] = (direction ? 0x80 : 0x00) | ((speed >> 8) & 0x0F); // Direction bit in the highest bit and upper 4 bits of speed
-    data[2] = speed & 0xFF;                                      // Lower 8 bits of speed
-    data[3] = acceleration;                                      // Acceleration
-                                                                 // data[4] = calculateCRC(data, 5);   // CRC including CAN ID (0x01)
-    debug.info();
-    Serial.print(F("ID: "));
-    Serial.print(canId, HEX);
-    Serial.print(F(", Speed: "));
-    Serial.print(speed);
-    Serial.print(F(", Acceleration: "));
-    Serial.print(acceleration);
-    Serial.print(F(", Direction: "));
-    Serial.println(direction ? F("CW") : F("CCW"));
-    sendCommand(data, 3);
-  }
-
-  void setTargetPosition(uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
-  {
-    Debug debug("Servo42D_CAN", __func__);
-    uint8_t data[7];
-    data[0] = absolute ? 0xF5 : 0xF4;  // Befehlscode für Position mode4: absolute motion by axis
-    data[1] = (speed >> 8) & 0x7F;     // Combine direction bit with the upper 7 bits of speed
-    data[2] = speed & 0xFF;            // Lower 8 bits of speed
-    data[3] = acceleration;            // Beschleunigung
-    data[4] = (position >> 16) & 0xFF; // Obere 8 Bits der Position
-    data[5] = (position >> 8) & 0xFF;  // Mittlere 8 Bits der Position
-    data[6] = position & 0xFF;         // Untere 8 Bits der Position
-                                       // data[7] = calculateCRC(data, 8);   // Checksumme oder reserved (kann auf 0 gesetzt werden)
-    debug.info();
-    Serial.print(F("ID: "));
-    Serial.print(canId, HEX);
-    Serial.print(F(", Position: "));
-    Serial.print(position);
-    Serial.print(F(", Geschwindigkeit: "));
-    Serial.print(speed);
-    Serial.print(F(", Beschleunigung: "));
-    Serial.print(acceleration);
-    Serial.print(F(", Modus: "));
-    Serial.println(absolute ? F("Absolut") : F("Relativ"));
-
-    sendCommand(data, 7);
-  }
-
-  void stopMotor()
-  {
-    uint8_t data[4] = {0xF7, 0x00, 0x00};
-    sendCommand(data, 4);
-  }
-
-  void enableMotor()
-  {
-    // F3 = Enable Command
-    // 01 = Enable / O0 = Disable
-    uint8_t data[3] = {0xF3, 0x01, 0x00};
-    sendCommand(data, 3);
-
-    // 85 = set enable pin
-    // enable = 00 active low (L)
-    // enable = 01 active high (H)
-    // enable = 02 active always (Hold)
-    uint8_t data2[3] = {0x85, 0x02, 0x00};
-    sendCommand(data, 3);
-  }
-
-  void queryMotorStatus()
-  {
-    uint8_t data[2] = {0xF1, 0x00};
-
-    sendCommand(data, 2);
-  }
-
-  void queryMotorPosition()
-  {
-    uint8_t data[1] = {0x30};
-
-    sendCommand(data, 1);
-  }
-
-  void handleQueryStatusResponse(uint8_t *data)
+  void handleQueryStatusResponse(const __u8 *data, uint8_t length)
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
@@ -272,25 +183,82 @@ public:
     switch (status)
     {
     case 0:
-      F5Status = F("Run failed");
+      F5Status = "Run failed";
       break;
     case 1:
-      F5Status = F("Run starting");
+      F5Status = "Run starting";
       break;
     case 2:
-      F5Status = F("Run complete");
+      F5Status = "Run complete";
       break;
     case 3:
-      F5Status = F("End limit stopped");
+      F5Status = "End limit stopped";
       break;
     default:
-      F5Status = F("Unknown status");
+      F5Status = "Unknown status";
       break;
     }
 
     debug.info();
     Serial.print(F("Motor response to setTargetPosition: "));
     Serial.println(F5Status);
+  }
+
+  void handeSetHomeResponse(const __u8 *data, uint8_t length)
+  {
+    Debug debug("Servo42D_CAN", __func__);
+
+    if (length != 3)
+    {
+      debug.error();
+      Serial.println(F("Invalid response length."));
+      return;
+    }
+
+    // Überprüfen, ob das erste Byte (Befehlscode) 0x90 ist
+    if (data[0] != 0x90)
+    {
+      debug.error();
+      Serial.print(F("Unexpected command code: "));
+      Serial.println(data[0], HEX);
+      return;
+    }
+
+    // Status und CRC extrahieren
+    uint8_t status = data[1];
+    uint8_t crc = data[2];
+
+    String statusMessage;
+    switch (status)
+    {
+    case 0:
+      statusMessage = "Set home failed.";
+      break;
+    case 1:
+      statusMessage = "Set home in progress...";
+      break;
+    case 2:
+      statusMessage = "Set home completed.";
+      break;
+    default:
+      statusMessage = "Unknown status.";
+      break;
+    }
+
+    debug.info();
+    Serial.print(F("Set Home Response: "));
+    Serial.print(F("Status: "));
+    Serial.print(statusMessage);
+    Serial.print(F("CRC: "));
+    Serial.println(crc, HEX);
+
+    // CRC überprüfen, falls notwendig
+    // uint8_t expected_crc = calculateChecksum(can_id, data, length - 1);
+    // if (crc == expected_crc) {
+    //     Serial.println(F("CRC check passed."));
+    // } else {
+    //     Serial.println(F("CRC check failed."));
+    // }
   }
 
   void decodeMessage(const __u8 *data, uint8_t length)
@@ -309,6 +277,14 @@ public:
     else if (data[0] == 0xF5)
     {
       handleSetPositionResponse(data, length);
+    }
+    else if (data[0] == 0x31)
+    {
+      handleQueryStatusResponse(data, length);
+    }
+    else if (data[0] == 0x90)
+    {
+      handeSetHomeResponse(data, length);
     }
     else
     {
