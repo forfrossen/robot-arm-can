@@ -23,8 +23,8 @@ public:
     data[1] = bitRate;
 
     debug.info();
-    Serial.print(F("Setting CAN Bit Rate: "));
-    Serial.println(bitRate);
+    debug.add(F("Setting CAN Bit Rate: "));
+    debug.print(bitRate);
 
     servo->sendCommand(data, 2);
   }

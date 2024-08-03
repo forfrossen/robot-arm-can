@@ -1,6 +1,9 @@
 #ifndef DEBUGGER_H
 #define DEBUGGER_H
 
+#include <Arduino.h>
+#include <vector>
+
 enum LogLevel
 {
   INFO,
@@ -15,10 +18,67 @@ class Debug
 private:
   const char *className;
   const char *functionName;
-  // std::vector<String> messageBuffer;
+  std::vector<String> messageBuffer;
 
 public:
   Debug(const char *className, const char *functionName) : className(className), functionName(functionName) {}
+
+  void add(const String &message)
+  {
+    messageBuffer.push_back(message);
+  }
+
+  void add(const char *message)
+  {
+    messageBuffer.push_back(String(message));
+  }
+
+  void add(const __FlashStringHelper *message)
+  {
+    messageBuffer.push_back(String(message));
+  }
+
+  template <typename T>
+  void add(T value, int format = DEC)
+  {
+    messageBuffer.push_back(String(value, format));
+  }
+
+  void print(const String &message)
+  {
+    messageBuffer.push_back(message);
+    println();
+  }
+
+  void print(const char *message)
+  {
+    messageBuffer.push_back(String(message));
+    println();
+  }
+
+  void print(const __FlashStringHelper *message)
+  {
+    messageBuffer.push_back(String(message));
+    println();
+  }
+
+  template <typename T>
+  void print(T value, int format = DEC)
+  {
+    messageBuffer.push_back(String(value, format));
+    println();
+  }
+
+  void println()
+  {
+    // if (classLoggingEnabled && functionLoggingEnabled && levelLoggingEnabled)
+    for (const auto &msg : messageBuffer)
+    {
+      Serial.print(msg);
+    }
+    Serial.println();
+    messageBuffer.clear();
+  }
 
   static const LogLevel GlobalLogLevel = LogLevel::INFO;
 
@@ -29,18 +89,18 @@ public:
     //  sprintf(debugMessage, "[%s]%s::%s\t", logLevelName, className, methodName);
     //  sprintf(debugMessage, "[%s]", logLevelName);
     const char *logLevelName = LogLevelNames[logLevel];
-    Serial.print(F("["));
-    Serial.print(logLevelName);
-    Serial.print(F("\t] "));
+    add(F("["));
+    add(logLevelName);
+    add(F("\t] "));
 
-    Serial.print(className);
-    Serial.print(F("::"));
-    Serial.print(functionName);
+    add(className);
+    add(F("::"));
+    add(functionName);
     for (int i = strlen(className) + strlen(functionName); i <= 45; i++)
     {
-      Serial.print(F(" "));
+      add(F(" "));
     }
-    Serial.print(F("\t"));
+    add(F("\t"));
   }
 
   void info()

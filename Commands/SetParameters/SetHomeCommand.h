@@ -30,16 +30,16 @@ public:
     data[5] = endLimit;                // End limit: 0 = disable, 1 = enable
 
     debug.info();
-    Serial.print(F("ID: "));
-    Serial.print(servo->canId, HEX);
-    Serial.print(F(", Home Trigger: "));
-    Serial.print(homeTrig ? F("High") : F("Low"));
-    Serial.print(F(", Home Direction: "));
-    Serial.print(homeDir ? F("CCW") : F("CW"));
-    Serial.print(F(", Home Speed: "));
-    Serial.print(homeSpeed);
-    Serial.print(F(", End Limit: "));
-    Serial.println(endLimit ? F("Enabled") : F("Disabled"));
+    debug.add(F("ID: "));
+    debug.add(servo->canId, HEX);
+    debug.add(F(", Home Trigger: "));
+    debug.add(homeTrig ? F("High") : F("Low"));
+    debug.add(F(", Home Direction: "));
+    debug.add(homeDir ? F("CCW") : F("CW"));
+    debug.add(F(", Home Speed: "));
+    debug.add(homeSpeed);
+    debug.add(F(", End Limit: "));
+    debug.print(endLimit ? F("Enabled") : F("Disabled"));
 
     servo->sendCommand(data, 6);
   }

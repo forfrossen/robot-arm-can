@@ -23,8 +23,8 @@ public:
     data[1] = direction;
 
     debug.info();
-    Serial.print(F("Setting Rotation Direction: "));
-    Serial.println(direction);
+    debug.add(F("Setting Rotation Direction: "));
+    debug.print(direction);
 
     servo->sendCommand(data, 2);
   }

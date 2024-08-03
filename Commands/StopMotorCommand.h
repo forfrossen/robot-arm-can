@@ -19,7 +19,7 @@ public:
     uint8_t data[4] = {0xF7};
 
     debug.info();
-    Serial.println(F("Stopping motor"));
+    debug.print(F("Stopping motor"));
 
     servo->sendCommand(data, 1);
   }

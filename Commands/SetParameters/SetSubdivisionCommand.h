@@ -23,8 +23,8 @@ public:
     data[1] = subdivision;
 
     debug.info();
-    Serial.print(F("Setting Subdivision: "));
-    Serial.println(subdivision);
+    debug.add(F("Setting Subdivision: "));
+    debug.print(subdivision);
 
     servo->sendCommand(data, 2);
   }

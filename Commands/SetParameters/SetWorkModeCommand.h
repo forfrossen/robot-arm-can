@@ -23,8 +23,8 @@ public:
     data[1] = mode;
 
     debug.info();
-    Serial.print(F("Setting Work Mode: "));
-    Serial.println(mode);
+    debug.add(F("Setting Work Mode: "));
+    debug.print(mode);
 
     servo->sendCommand(data, 2);
   }

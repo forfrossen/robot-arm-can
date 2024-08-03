@@ -23,8 +23,8 @@ public:
     data[1] = enable;
 
     debug.info();
-    Serial.print(F("Setting Auto Screen Off: "));
-    Serial.println(enable);
+    debug.add(F("Setting Auto Screen Off: "));
+    debug.print(enable);
 
     servo->sendCommand(data, 2);
   }

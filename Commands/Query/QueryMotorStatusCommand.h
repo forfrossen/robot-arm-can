@@ -12,7 +12,7 @@ public:
     uint8_t data[1] = {0xF1};
 
     debug.info();
-    Serial.println(F("Querying motor status"));
+    debug.print(F("Querying motor status"));
 
     servo->sendCommand(data, 1);
   }

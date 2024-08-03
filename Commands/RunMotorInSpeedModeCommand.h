@@ -32,12 +32,12 @@ public:
     data[3] = acceleration;
 
     debug.info();
-    Serial.print(F("Running motor in speed mode: "));
-    Serial.print(speed);
-    Serial.print(F(" RPM, acceleration: "));
-    Serial.print(acceleration);
-    Serial.print(F(", direction: "));
-    Serial.println(direction ? F("CW") : F("CCW"));
+    debug.add(F("Running motor in speed mode: "));
+    debug.add(speed);
+    debug.add(F(" RPM, acceleration: "));
+    debug.add(acceleration);
+    debug.add(F(", direction: "));
+    debug.print(direction ? F("CW") : F("CCW"));
 
     servo->sendCommand(data, 3);
   }

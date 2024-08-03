@@ -13,21 +13,21 @@ ArduinoLEDMatrix matrix;
 
 void printMacAddress(byte mac[])
 {
-
-  Serial.print("MAC address: ");
+  Debug debug("UTILS_WIFI", __func__);
+  debug.add("MAC address: ");
   for (int i = 0; i < 6; i++)
   {
     if (i > 0)
     {
-      Serial.print(":");
+      debug.add(":");
     }
     if (mac[i] < 16)
     {
-      Serial.print("0");
+      debug.add("0");
     }
-    Serial.print(mac[i], HEX);
+    debug.add(mac[i], HEX);
   }
-  Serial.println();
+  debug.println();
 }
 
 void printWifiData()
@@ -36,8 +36,8 @@ void printWifiData()
   // print your board's IP address:
   IPAddress ip = WiFi.localIP();
   debug.info();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
+  debug.add("IP Address: ");
+  debug.print(ip);
 
   // print your MAC address:
   byte mac[6];
@@ -51,27 +51,27 @@ void printCurrentNet()
   Debug debug("UTILS_WIFI", __func__);
   // print the SSID of the network you're attached to:
   debug.info();
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
+  debug.add("SSID: ");
+  debug.print(WiFi.SSID());
 
   // print the MAC address of the router you're attached to:
   byte bssid[6];
   debug.info();
-  Serial.print("BSSID: ");
+  debug.add("BSSID: ");
   WiFi.BSSID(bssid);
   printMacAddress(bssid);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
   debug.info();
-  Serial.print("signal strength (RSSI):");
-  Serial.println(rssi);
+  debug.add("signal strength (RSSI):");
+  debug.print(rssi);
 
   // print the encryption type:
   byte encryption = WiFi.encryptionType();
   debug.info();
-  Serial.print("Encryption Type:");
-  Serial.println(encryption, HEX);
+  debug.add("Encryption Type:");
+  debug.print(encryption, HEX);
 }
 
 void connectWifi()
@@ -86,7 +86,7 @@ void connectWifi()
   if (WiFi.status() == WL_NO_MODULE)
   {
     debug.error();
-    Serial.println("Communication with WiFi module failed!");
+    debug.print("Communication with WiFi module failed!");
     // don't continue
     while (true)
       ;
@@ -96,15 +96,15 @@ void connectWifi()
   if (fv < WIFI_FIRMWARE_LATEST_VERSION)
   {
     debug.info();
-    Serial.println("Please upgrade the firmware");
+    debug.print("Please upgrade the firmware");
   }
 
   // attempt to connect to WiFi network:
   while (status != WL_CONNECTED)
   {
     debug.info();
-    Serial.print("Attempting to connect to WPA SSID: ");
-    Serial.println(ssid);
+    debug.add("Attempting to connect to WPA SSID: ");
+    debug.print(ssid);
     // Connect to WPA/WPA2 network:
     status = WiFi.begin(ssid, pass);
 
@@ -114,7 +114,7 @@ void connectWifi()
 
   // you're connected now, so print out the data:
   debug.info();
-  Serial.println("You're connected to the network");
+  debug.print("You're connected to the network");
   printCurrentNet();
   printWifiData();
   matrix.loadSequence(LEDMATRIX_ANIMATION_BOUNCING_BALL);

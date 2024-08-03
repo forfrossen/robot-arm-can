@@ -23,8 +23,8 @@ public:
     data[1] = enable;
 
     debug.info();
-    Serial.print(F("Setting Enable Pin: "));
-    Serial.println(enable);
+    debug.add(F("Setting Enable Pin: "));
+    debug.print(enable);
 
     servo->sendCommand(data, 2);
   }

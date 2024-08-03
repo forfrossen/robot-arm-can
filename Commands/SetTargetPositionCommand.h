@@ -31,14 +31,14 @@ public:
                                        // data[7] = calculateCRC(data, 8)
 
     debug.info();
-    Serial.print(F("Setting target position: "));
-    Serial.print(position);
-    Serial.print(F(", Speed: "));
-    Serial.print(speed);
-    Serial.print(F(", Acceleration: "));
-    Serial.print(acceleration);
-    Serial.print(F(", Mode: "));
-    Serial.println(absolute ? F("Absolute") : F("Relative"));
+    debug.add(F("Setting target position: "));
+    debug.add(position);
+    debug.add(F(", Speed: "));
+    debug.add(speed);
+    debug.add(F(", Acceleration: "));
+    debug.add(acceleration);
+    debug.add(F(", Mode: "));
+    debug.print(absolute ? F("Absolute") : F("Relative"));
 
     servo->sendCommand(data, 7);
   }

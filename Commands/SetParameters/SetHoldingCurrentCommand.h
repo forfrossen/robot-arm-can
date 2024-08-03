@@ -23,8 +23,8 @@ public:
     data[1] = holdCurrent;
 
     debug.info();
-    Serial.print(F("Setting Holding Current: "));
-    Serial.println(holdCurrent);
+    debug.add(F("Setting Holding Current: "));
+    debug.print(holdCurrent);
 
     servo->sendCommand(data, 2);
   }

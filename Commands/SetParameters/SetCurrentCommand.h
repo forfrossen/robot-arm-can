@@ -24,8 +24,8 @@ public:
     data[2] = current & 0xFF;
 
     debug.info();
-    Serial.print(F("Setting Current: "));
-    Serial.println(current);
+    debug.add(F("Setting Current: "));
+    debug.print(current);
 
     servo->sendCommand(data, 3);
   }

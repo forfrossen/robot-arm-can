@@ -103,8 +103,8 @@ public:
     Debug debug("CommandMapper", __func__);
 
     debug.info();
-    Serial.print(F("Looking for code: "));
-    Serial.println(code, HEX);
+    debug.add(F("Looking for code: "));
+    debug.print(code, HEX);
 
     auto it = commandMap.find(code);
     if (it != commandMap.end())
@@ -117,8 +117,8 @@ public:
     }
 
     debug.info();
-    Serial.print(F("Found command name: "));
-    Serial.println(commandName);
+    debug.add(F("Found command name: "));
+    debug.print(commandName);
   };
 };
 #endif

@@ -59,11 +59,11 @@ void setup()
 
   Debug debug("MAIN", __func__);
   debug.info();
-  Serial.println(F("Hallo, Test from Arm !"));
+  debug.print(F("Hallo, Test from Arm !"));
 
   debug.info();
-  Serial.print(F("Build date: "));
-  Serial.println(compile_date);
+  debug.add(F("Build date: "));
+  debug.print(compile_date);
 
 #ifdef USE_WIFI
   connectWifi();
@@ -115,7 +115,7 @@ void loop()
 
   checkForMessages();
 
-  // Serial.println("================================");
+  // debug.print("================================");
   // servo1.stopMotor();
   // servo2.stopMotor();
 
@@ -214,8 +214,8 @@ void checkForMessages()
   {
     CanMsg const msg = CAN.read();
     debug.info();
-    Serial.print(F("Message received with ID: "));
-    Serial.println(msg.getStandardId(), HEX);
+    debug.add(F("Message received with ID: "));
+    debug.print(msg.getStandardId(), HEX);
 
     auto it = Servos.find(msg.getStandardId());
     if (it != Servos.end())

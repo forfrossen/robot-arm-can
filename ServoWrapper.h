@@ -30,8 +30,8 @@ public:
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
-    Serial.print(F("New Servo42D_CAN object created with CAN ID: "));
-    Serial.println(canId, HEX);
+    debug.add(F("New Servo42D_CAN object created with CAN ID: "));
+    debug.print(canId, HEX);
 
     // registerResponseHandler(0x01, myResponseHandler); // Register handler for command code 0x01
 
@@ -59,7 +59,7 @@ public:
     if (!code)
     {
       debug.error();
-      Serial.println(F("Error: code is empty!"));
+      debug.print(F("Error: code is empty!"));
       return;
     }
 
@@ -67,14 +67,14 @@ public:
     commandMapper->getCommandNameFromCode(code, commandName);
 
     debug.info();
-    Serial.print(F("ID: "));
-    Serial.print(canId);
-    Serial.print(F("\t length: "));
-    Serial.print(frame.data_length, HEX);
-    Serial.print(F("\tcode: "));
-    Serial.print(frame.data[0], HEX);
-    Serial.print(F("\tcommandName: "));
-    Serial.println(commandName);
+    debug.add(F("ID: "));
+    debug.add(canId);
+    debug.add(F("\t length: "));
+    debug.add(frame.data_length, HEX);
+    debug.add(F("\tcode: "));
+    debug.add(frame.data[0], HEX);
+    debug.add(F("\tcommandName: "));
+    debug.print(commandName);
 
     if (frame.getStandardId() == canId)
     {
@@ -91,7 +91,7 @@ public:
     if (!code)
     {
       debug.error();
-      Serial.println(F("Error: code is empty!"));
+      debug.print(F("Error: code is empty!"));
       return;
     }
 
@@ -99,24 +99,24 @@ public:
     commandMapper->getCommandNameFromCode(code, commandName);
 
     debug.info();
-    Serial.print(F("ID: "));
-    Serial.print(canId, HEX);
-    Serial.print(F("\t length: "));
-    Serial.print(length);
-    Serial.print(F("\t code: "));
-    Serial.print(data[0]);
-    Serial.print(F("\t commandName: "));
-    Serial.println(commandName);
+    debug.add(F("ID: "));
+    debug.add(canId, HEX);
+    debug.add(F("\t length: "));
+    debug.add(length);
+    debug.add(F("\t code: "));
+    debug.add(data[0]);
+    debug.add(F("\t commandName: "));
+    debug.print(commandName);
 
     if (canBus->sendCANMessage(canId, length, data))
     {
       debug.info();
-      Serial.println(F("    ==> Message sent successfully!"));
+      debug.print(F("    ==> Message sent successfully!"));
     }
     else
     {
       debug.error();
-      Serial.println(F("    ==> Error sending message!"));
+      debug.print(F("    ==> Error sending message!"));
     }
   }
 
@@ -130,28 +130,28 @@ public:
     switch (status)
     {
     case 0:
-      Serial.println(F("Abfrage fehlgeschlagen"));
+      debug.print(F("Abfrage fehlgeschlagen"));
       break;
     case 1:
-      Serial.println(F("Motor gestoppt"));
+      debug.print(F("Motor gestoppt"));
       break;
     case 2:
-      Serial.println(F("Motor beschleunigt"));
+      debug.print(F("Motor beschleunigt"));
       break;
     case 3:
-      Serial.println(F("Motor verlangsamt"));
+      debug.print(F("Motor verlangsamt"));
       break;
     case 4:
-      Serial.println(F("Motor volle Geschwindigkeit"));
+      debug.print(F("Motor volle Geschwindigkeit"));
       break;
     case 5:
-      Serial.println(F("Motor wird geparkt"));
+      debug.print(F("Motor wird geparkt"));
       break;
     case 6:
-      Serial.println(F("Motor wird kalibriert"));
+      debug.print(F("Motor wird kalibriert"));
       break;
     default:
-      Serial.println(F("Unbekannter Status"));
+      debug.print(F("Unbekannter Status"));
       break;
     }
   }
@@ -162,7 +162,7 @@ public:
     if (length != 8 || data[0] != 0x30)
     {
       debug.error();
-      Serial.println(F("Invalid response length or code."));
+      debug.print(F("Invalid response length or code."));
       return;
     }
 
@@ -171,12 +171,12 @@ public:
     uint8_t crc = data[7];
 
     debug.info();
-    Serial.print(F("Carry value: "));
-    Serial.println(CarryValue);
+    debug.add(F("Carry value: "));
+    debug.print(CarryValue);
 
     debug.info();
-    Serial.print(F("Encoder value: "));
-    Serial.println(EncoderValue);
+    debug.add(F("Encoder value: "));
+    debug.print(EncoderValue);
   }
 
   void handleSetPositionResponse(const uint8_t *data, uint8_t length)
@@ -186,14 +186,14 @@ public:
     {
 
       debug.error();
-      Serial.println(F("Invalid response length."));
+      debug.print(F("Invalid response length."));
       return;
     }
     if (data[0] != 0xF5)
     {
       debug.error();
-      Serial.print(F("Unexpected command code: "));
-      Serial.println(data[0], HEX);
+      debug.add(F("Unexpected command code: "));
+      debug.print(data[0], HEX);
       return;
     }
 
@@ -222,8 +222,8 @@ public:
     }
 
     debug.info();
-    Serial.print(F("Motor response to setTargetPosition: "));
-    Serial.println(F5Status);
+    debug.add(F("Motor response to setTargetPosition: "));
+    debug.print(F5Status);
   }
 
   void handeSetHomeResponse(const uint8_t *data, uint8_t length)
@@ -233,7 +233,7 @@ public:
     if (length != 3)
     {
       debug.error();
-      Serial.println(F("Invalid response length."));
+      debug.print(F("Invalid response length."));
       return;
     }
 
@@ -241,8 +241,8 @@ public:
     if (data[0] != 0x90)
     {
       debug.error();
-      Serial.print(F("Unexpected command code: "));
-      Serial.println(data[0], HEX);
+      debug.add(F("Unexpected command code: "));
+      debug.print(data[0], HEX);
       return;
     }
 
@@ -268,18 +268,18 @@ public:
     }
 
     debug.info();
-    Serial.print(F("Set Home Response: "));
-    Serial.print(F("Status: "));
-    Serial.print(statusMessage);
-    Serial.print(F("CRC: "));
-    Serial.println(crc, HEX);
+    debug.add(F("Set Home Response: "));
+    debug.add(F("Status: "));
+    debug.add(statusMessage);
+    debug.add(F("CRC: "));
+    debug.print(crc, HEX);
 
     // CRC überprüfen, falls notwendig
     // uint8_t expected_crc = calculateChecksum(can_id, data, length - 1);
     // if (crc == expected_crc) {
-    //     Serial.println(F("CRC check passed."));
+    //     debug.print(F("CRC check passed."));
     // } else {
-    //     Serial.println(F("CRC check failed."));
+    //     debug.print(F("CRC check failed."));
     // }
   }
 
@@ -287,8 +287,8 @@ public:
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();
-    Serial.print(F("Received message with code: "));
-    Serial.println(data[0], HEX);
+    debug.add(F("Received message with code: "));
+    debug.print(data[0], HEX);
 
     char msgString[128]; // Array to store serial string
 
@@ -311,18 +311,18 @@ public:
     else
     {
       debug.error();
-      Serial.print(F("unimplemented code: "));
-      Serial.println(data[0], HEX);
+      debug.add(F("unimplemented code: "));
+      debug.print(data[0], HEX);
 
       debug.info();
-      Serial.print(F("Raw code byte: "));
-      Serial.println(data[0]);
+      debug.add(F("Raw code byte: "));
+      debug.print(data[0]);
 
       for (byte i = 0; i < length; i++)
       {
         sprintf_P(msgString, PSTR(" 0x%.2X"), data[i]);
         debug.info();
-        Serial.println(msgString);
+        debug.print(msgString);
       }
     }
   }

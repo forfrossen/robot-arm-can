@@ -24,8 +24,8 @@ public:
     data[2] = canId & 0xFF;
 
     debug.info();
-    Serial.print(F("Setting CAN ID: "));
-    Serial.println(canId, HEX);
+    debug.add(F("Setting CAN ID: "));
+    debug.print(canId, HEX);
 
     servo->sendCommand(data, 3);
   }

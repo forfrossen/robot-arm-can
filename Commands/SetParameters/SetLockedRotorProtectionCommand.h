@@ -23,8 +23,8 @@ public:
     data[1] = enable;
 
     debug.info();
-    Serial.print(F("Setting Locked Rotor Protection: "));
-    Serial.println(enable);
+    debug.add(F("Setting Locked Rotor Protection: "));
+    debug.print(enable);
 
     servo->sendCommand(data, 2);
   }
