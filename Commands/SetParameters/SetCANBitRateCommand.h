@@ -2,17 +2,17 @@
 #define SET_CAN_BITRATE_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 
 class SetCANBitRateCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint8_t bitRate;
 
 public:
-  SetCANBitRateCommand(Servo42D_CAN *servo, uint8_t bitRate)
+  SetCANBitRateCommand(Servo *servo, uint8_t bitRate)
       : servo(servo), bitRate(bitRate) {}
 
   void execute() override

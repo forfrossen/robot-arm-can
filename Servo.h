@@ -1,19 +1,18 @@
 #ifndef SERVO42D_CAN_H
 #define SERVO42D_CAN_H
 
-#include <Arduino.h>
-#include <SPI.h>
+#include <Arduino_FreeRTOS.h>
 #include <Arduino_CAN.h>
 #include <map>
 #include <functional>
 #include "Debug.h"
 #include "CAN.h"
-#include "utils/CommandMapper.h"
+#include "utils\CommandMapper.h"
 #include "ResponseHandlerRegistry.h"
 
 #define MAX_PROCESSED_MESSAGES 10
 
-class Servo42D_CAN
+class Servo
 {
 private:
   CANBus *canBus;
@@ -26,7 +25,7 @@ private:
 public:
   uint32_t canId;
 
-  Servo42D_CAN(uint32_t id, CANBus *bus, CommandMapper *commandMapper) : canId(id), canBus(bus), commandMapper(commandMapper)
+  Servo(uint32_t id, CANBus *bus, CommandMapper *commandMapper) : canId(id), canBus(bus), commandMapper(commandMapper)
   {
     Debug debug("Servo42D_CAN", __func__);
     debug.info();

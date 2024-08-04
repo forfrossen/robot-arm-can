@@ -2,17 +2,17 @@
 #define SET_WORK_MODE_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 
 class SetWorkModeCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint8_t mode;
 
 public:
-  SetWorkModeCommand(Servo42D_CAN *servo, uint8_t mode)
+  SetWorkModeCommand(Servo *servo, uint8_t mode)
       : servo(servo), mode(mode) {}
 
   void execute() override

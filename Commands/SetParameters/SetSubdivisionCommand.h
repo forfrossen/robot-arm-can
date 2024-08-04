@@ -2,17 +2,17 @@
 #define SET_SUBDIVISION_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 
 class SetSubdivisionCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint8_t subdivision;
 
 public:
-  SetSubdivisionCommand(Servo42D_CAN *servo, uint8_t subdivision)
+  SetSubdivisionCommand(Servo *servo, uint8_t subdivision)
       : servo(servo), subdivision(subdivision) {}
 
   void execute() override

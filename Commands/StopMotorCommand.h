@@ -2,16 +2,16 @@
 #define STOP_MOTOR_COMMAND_H
 
 #include "Command.h"
-#include "../ServoWrapper.h"
+#include "..\Servo.h"
 #include "../Debug.h"
 
 class StopMotorCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
 
 public:
-  StopMotorCommand(Servo42D_CAN *servo) : servo(servo) {}
+  StopMotorCommand(Servo *servo) : servo(servo) {}
 
   void execute() override
   {

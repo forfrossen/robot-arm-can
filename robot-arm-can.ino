@@ -10,7 +10,7 @@
 #include "LogQueue.h"
 #include "Debug.h"
 #include "CAN.h"
-#include "ServoWrapper.h"
+#include "Servo.h"
 
 #define DONT_USE_WIFI
 #ifdef USE_WIFI
@@ -37,11 +37,11 @@ WiFiServer server(80);
 LogQueue logQueue;
 CANBus *canBus;
 CommandMapper *commandMapper;
-Servo42D_CAN *servo1;
-Servo42D_CAN *servo2;
-Servo42D_CAN *servo3;
+Servo *servo1;
+Servo *servo2;
+Servo *servo3;
 
-std::map<uint8_t, Servo42D_CAN *> Servos; // Replace LittleVector with std::map
+std::map<uint8_t, Servo *> Servos; // Replace LittleVector with std::map
 
 unsigned long prevTx = 0;
 unsigned long prevRx = 0;
@@ -61,7 +61,6 @@ void setup()
 
   while (!Serial)
     ;
-
 
   Debug debug("MAIN", __func__);
   Debug::setLogQueue(&logQueue);
@@ -89,9 +88,9 @@ void setup()
   commandMapper = new CommandMapper();
 
   // Initialisierung der Servo42D_CAN Instanzen
-  servo1 = new Servo42D_CAN(0x01, canBus, commandMapper);
-  servo2 = new Servo42D_CAN(0x02, canBus, commandMapper);
-  servo3 = new Servo42D_CAN(0x03, canBus, commandMapper);
+  servo1 = new Servo(0x01, canBus, commandMapper);
+  servo2 = new Servo(0x02, canBus, commandMapper);
+  servo3 = new Servo(0x03, canBus, commandMapper);
 
   Servos[0x01] = servo1;
   Servos[0x02] = servo2;

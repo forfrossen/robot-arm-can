@@ -2,19 +2,19 @@
 #define SET_HOME_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 class SetHomeCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint8_t homeTrig;
   uint8_t homeDir;
   uint16_t homeSpeed;
   uint8_t endLimit;
 
 public:
-  SetHomeCommand(Servo42D_CAN *servo, uint8_t homeTrig, uint8_t homeDir, uint16_t homeSpeed, uint8_t endLimit)
+  SetHomeCommand(Servo *servo, uint8_t homeTrig, uint8_t homeDir, uint16_t homeSpeed, uint8_t endLimit)
       : servo(servo), homeTrig(homeTrig), homeDir(homeDir), homeSpeed(homeSpeed), endLimit(endLimit) {}
 
   void execute() override

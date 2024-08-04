@@ -2,17 +2,17 @@
 #define SET_CAN_ID_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 
 class SetCANIDCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint16_t canId;
 
 public:
-  SetCANIDCommand(Servo42D_CAN *servo, uint16_t canId)
+  SetCANIDCommand(Servo *servo, uint16_t canId)
       : servo(servo), canId(canId) {}
 
   void execute() override

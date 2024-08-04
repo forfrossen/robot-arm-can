@@ -2,17 +2,17 @@
 #define SET_HOLDING_CURRENT_COMMAND_H
 
 #include "../Command.h"
-#include "../../ServoWrapper.h"
+#include "..\..\Servo.h"
 #include "../../Debug.h"
 
 class SetHoldingCurrentCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint8_t holdCurrent;
 
 public:
-  SetHoldingCurrentCommand(Servo42D_CAN *servo, uint8_t holdCurrent)
+  SetHoldingCurrentCommand(Servo *servo, uint8_t holdCurrent)
       : servo(servo), holdCurrent(holdCurrent) {}
 
   void execute() override

@@ -2,19 +2,19 @@
 #define SET_TARGET_POSITION_COMMAND_H
 
 #include "Command.h"
-#include "../ServoWrapper.h"
+#include "..\Servo.h"
 #include "../Debug.h"
 class SetTargetPositionCommand : public Command
 {
 private:
-  Servo42D_CAN *servo;
+  Servo *servo;
   uint32_t position;
   uint8_t speed;
   uint8_t acceleration;
   bool absolute;
 
 public:
-  SetTargetPositionCommand(Servo42D_CAN *servo, uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
+  SetTargetPositionCommand(Servo *servo, uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
       : servo(servo), position(position), speed(speed), acceleration(acceleration), absolute(absolute) {}
 
   void execute() override
