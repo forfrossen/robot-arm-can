@@ -2,17 +2,17 @@
 #define SET_AUTO_SCREEN_OFF_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 
 class SetAutoScreenOffCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint8_t enable;
 
 public:
-  SetAutoScreenOffCommand(Servo *servo, uint8_t enable)
+  SetAutoScreenOffCommand(CANServo *servo, uint8_t enable)
       : servo(servo), enable(enable) {}
 
   void execute() override

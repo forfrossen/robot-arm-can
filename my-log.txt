@@ -816,3 +816,248 @@ time="2024-08-04T09:24:20+02:00" level=info msg="  found better lib" lib=Arduino
 time="2024-08-04T09:24:21+02:00" level=info msg="Resolving include SPI.h for arch renesas_uno"
 time="2024-08-04T09:24:21+02:00" level=info msg="  found better lib" lib=SPI prio=6A6
 time="2024-08-04T09:24:27+02:00" level=info msg="Performing 1200-bps touch reset on serial port COM7" phase="board reset"
+time="2024-08-04T10:05:28+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:05:28+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:05:28+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:05:29+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:05:29+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:05:29+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:05:29+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:05:29+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:05:29+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:05:29+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:05:29+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:05:29+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:05:29+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:05:30+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:05:30+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:05:32+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:05:32+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:05:32+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:05:32+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:05:33+02:00" level=info msg="Resolving include Servo.h for arch renesas_uno"
+time="2024-08-04T10:05:33+02:00" level=info msg="  found better lib" lib=Servo prio=6B1
+time="2024-08-04T10:05:51+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:05:51+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:05:51+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:05:51+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:05:51+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:05:51+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:05:51+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:05:51+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:05:51+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:05:51+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:05:51+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:05:51+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:05:51+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:05:52+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:05:52+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:05:54+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:05:54+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:05:55+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:05:55+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:07:35+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:07:35+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:07:35+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:07:36+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:07:36+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:07:36+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:07:36+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:07:36+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:07:36+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:07:36+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:07:36+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:07:36+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:07:36+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:07:37+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:07:37+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:07:39+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:07:39+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:07:40+02:00" level=info msg="Resolving include SPI.h for arch renesas_uno"
+time="2024-08-04T10:07:40+02:00" level=info msg="  found better lib" lib=SPI prio=6A6
+time="2024-08-04T10:07:40+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:07:40+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:11:04+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:11:04+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:11:04+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:11:04+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:11:04+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:11:04+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:11:04+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:11:04+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:11:04+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:11:04+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:11:04+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:11:04+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:11:04+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:11:05+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:11:05+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:11:07+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:11:07+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:11:08+02:00" level=info msg="Resolving include SPI.h for arch renesas_uno"
+time="2024-08-04T10:11:08+02:00" level=info msg="  found better lib" lib=SPI prio=6A6
+time="2024-08-04T10:11:09+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:11:09+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:12:02+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:12:02+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:12:02+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:12:02+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:12:02+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:12:02+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:12:02+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:12:02+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:12:02+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:12:02+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:12:02+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:12:02+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:12:03+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:12:04+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:12:04+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:12:05+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:12:05+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:12:06+02:00" level=info msg="Resolving include SPI.h for arch renesas_uno"
+time="2024-08-04T10:12:06+02:00" level=info msg="  found better lib" lib=SPI prio=6A6
+time="2024-08-04T10:12:07+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:12:07+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:12:45+02:00" level=info msg="arduino-cli version 1.0.3"
+time="2024-08-04T10:12:45+02:00" level=info msg="Using config file: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\arduino-cli.yaml"
+time="2024-08-04T10:12:45+02:00" level=info msg="Executing `arduino-cli compile`"
+time="2024-08-04T10:12:46+02:00" level=info msg="Checking signature" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json" signatureFile="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\package_index.json.sig" trusted=true
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading hardware from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading package arduino from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware"
+time="2024-08-04T10:12:46+02:00" level=info msg="Missing signature file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\installed.json"
+time="2024-08-04T10:12:46+02:00" level=info msg="Adding monitor tool" protocol=serial tool="builtin:serial-monitor"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded platform" platform="arduino:renesas_uno@1.2.0"
+time="2024-08-04T10:12:46+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="arduino:arm-none-eabi-gcc@7-2017q4"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="arduino:bossac@1.9.1-arduino5"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="arduino:dfu-util@0.11.0-arduino5"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="arduino:openocd@0.11.0-arduino2"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading package builtin from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin"
+time="2024-08-04T10:12:46+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\builtin\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:ctags@5.8-arduino11"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:dfu-discovery@0.1.2"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:mdns-discovery@1.0.9"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.0"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:serial-discovery@1.4.1"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loaded tool" tool="builtin:serial-monitor@0.14.1"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading package esp32 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware"
+time="2024-08-04T10:12:46+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp32\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading package esp8266 from: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware"
+time="2024-08-04T10:12:46+02:00" level=info msg="Checking existence of 'tools' path: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading tools from dir: C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools"
+time="2024-08-04T10:12:46+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:12:46+02:00" level=info msg="Loading libraries index file" index="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\library_index.json"
+time="2024-08-04T10:12:46+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:12:47+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.2.0\\libraries" isSingleLibrary=false location=platform
+time="2024-08-04T10:12:47+02:00" level=info msg="Adding libraries dir" dir="C:\\Users\\markus.ZION89\\Documents\\Arduino\\libraries" isSingleLibrary=false location=user
+time="2024-08-04T10:12:49+02:00" level=info msg="Resolving include Arduino_CAN.h for arch renesas_uno"
+time="2024-08-04T10:12:49+02:00" level=info msg="  found better lib" lib=Arduino_CAN prio=6B0
+time="2024-08-04T10:12:50+02:00" level=info msg="Resolving include SPI.h for arch renesas_uno"
+time="2024-08-04T10:12:50+02:00" level=info msg="  found better lib" lib=SPI prio=6A6
+time="2024-08-04T10:12:50+02:00" level=info msg="Resolving include Arduino_FreeRTOS.h for arch renesas_uno"
+time="2024-08-04T10:12:50+02:00" level=info msg="  found better lib" lib=Arduino_FreeRTOS prio=6B0
+time="2024-08-04T10:12:56+02:00" level=info msg="Performing 1200-bps touch reset on serial port COM7" phase="board reset"

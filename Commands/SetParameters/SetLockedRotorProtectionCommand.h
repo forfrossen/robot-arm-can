@@ -2,17 +2,17 @@
 #define SET_LOCKED_ROTOR_PROTECTION_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 
 class SetLockedRotorProtectionCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint8_t enable;
 
 public:
-  SetLockedRotorProtectionCommand(Servo *servo, uint8_t enable)
+  SetLockedRotorProtectionCommand(CANServo *servo, uint8_t enable)
       : servo(servo), enable(enable) {}
 
   void execute() override

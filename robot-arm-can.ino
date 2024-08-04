@@ -6,11 +6,12 @@
 
 #include <map>
 #include <Arduino_CAN.h>
+#include <SPI.h>
 
 #include "LogQueue.h"
 #include "Debug.h"
 #include "CAN.h"
-#include "Servo.h"
+#include "CANServo.h"
 
 #define DONT_USE_WIFI
 #ifdef USE_WIFI
@@ -37,11 +38,11 @@ WiFiServer server(80);
 LogQueue logQueue;
 CANBus *canBus;
 CommandMapper *commandMapper;
-Servo *servo1;
-Servo *servo2;
-Servo *servo3;
+CANServo *servo1;
+CANServo *servo2;
+CANServo *servo3;
 
-std::map<uint8_t, Servo *> Servos; // Replace LittleVector with std::map
+std::map<uint8_t, CANServo *> Servos; // Replace LittleVector with std::map
 
 unsigned long prevTx = 0;
 unsigned long prevRx = 0;
@@ -88,9 +89,9 @@ void setup()
   commandMapper = new CommandMapper();
 
   // Initialisierung der Servo42D_CAN Instanzen
-  servo1 = new Servo(0x01, canBus, commandMapper);
-  servo2 = new Servo(0x02, canBus, commandMapper);
-  servo3 = new Servo(0x03, canBus, commandMapper);
+  servo1 = new CANServo(0x01, canBus, commandMapper);
+  servo2 = new CANServo(0x02, canBus, commandMapper);
+  servo3 = new CANServo(0x03, canBus, commandMapper);
 
   Servos[0x01] = servo1;
   Servos[0x02] = servo2;

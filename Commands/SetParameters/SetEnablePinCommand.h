@@ -2,17 +2,17 @@
 #define SET_ENABLE_PIN_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 
 class SetEnablePinCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint8_t enable;
 
 public:
-  SetEnablePinCommand(Servo *servo, uint8_t enable)
+  SetEnablePinCommand(CANServo *servo, uint8_t enable)
       : servo(servo), enable(enable) {}
 
   void execute() override

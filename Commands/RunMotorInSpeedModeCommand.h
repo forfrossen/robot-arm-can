@@ -2,19 +2,19 @@
 #define RUN_MOTOR_IN_SPEED_MODE_COMMAND_H
 
 #include "Command.h"
-#include "..\Servo.h"
+#include "..\CANServo.h"
 #include "../Debug.h"
 
 class RunMotorInSpeedModeCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   bool direction;
   uint16_t speed;
   uint8_t acceleration;
 
 public:
-  RunMotorInSpeedModeCommand(Servo *servo, bool direction, uint16_t speed, uint8_t acceleration)
+  RunMotorInSpeedModeCommand(CANServo *servo, bool direction, uint16_t speed, uint8_t acceleration)
       : servo(servo), direction(direction), speed(speed), acceleration(acceleration) {}
 
   void execute() override

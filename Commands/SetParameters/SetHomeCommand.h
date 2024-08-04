@@ -2,19 +2,19 @@
 #define SET_HOME_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 class SetHomeCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint8_t homeTrig;
   uint8_t homeDir;
   uint16_t homeSpeed;
   uint8_t endLimit;
 
 public:
-  SetHomeCommand(Servo *servo, uint8_t homeTrig, uint8_t homeDir, uint16_t homeSpeed, uint8_t endLimit)
+  SetHomeCommand(CANServo *servo, uint8_t homeTrig, uint8_t homeDir, uint16_t homeSpeed, uint8_t endLimit)
       : servo(servo), homeTrig(homeTrig), homeDir(homeDir), homeSpeed(homeSpeed), endLimit(endLimit) {}
 
   void execute() override
@@ -31,7 +31,7 @@ public:
 
     debug.info();
     debug.add(F("ID: "));
-    debug.add(servo->canId, HEX);
+    debug.add(servo->getCanId(), HEX);
     debug.add(F(", Home Trigger: "));
     debug.add(homeTrig ? F("High") : F("Low"));
     debug.add(F(", Home Direction: "));

@@ -1,10 +1,10 @@
 class QueryMotorPositionCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
 
 public:
-  QueryMotorPositionCommand(Servo *servo) : servo(servo) {}
+  QueryMotorPositionCommand(CANServo *servo) : servo(servo) {}
 
   void execute() override
   {

@@ -2,17 +2,17 @@
 #define SET_ROTATION_DIRECTION_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 
 class SetRotationDirectionCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint8_t direction;
 
 public:
-  SetRotationDirectionCommand(Servo *servo, uint8_t direction)
+  SetRotationDirectionCommand(CANServo *servo, uint8_t direction)
       : servo(servo), direction(direction) {}
 
   void execute() override

@@ -2,17 +2,17 @@
 #define SET_CURRENT_COMMAND_H
 
 #include "../Command.h"
-#include "..\..\Servo.h"
+#include "..\..\CANServo.h"
 #include "../../Debug.h"
 
 class SetCurrentCommand : public Command
 {
 private:
-  Servo *servo;
+  CANServo *servo;
   uint16_t current;
 
 public:
-  SetCurrentCommand(Servo *servo, uint16_t current)
+  SetCurrentCommand(CANServo *servo, uint16_t current)
       : servo(servo), current(current) {}
 
   void execute() override
