@@ -1,14 +1,14 @@
 #ifndef SERVO42D_CAN_H
 #define SERVO42D_CAN_H
 
+#include <Arduino.h>
 #include <SPI.h>
-#include "CAN.h"
-#include "utils/CommandMapper.h"
-#include "Debug.h"
 #include <Arduino_CAN.h>
 #include <map>
 #include <functional>
-#include "utils/ResponseHandler.h"
+#include "Debug.h"
+#include "CAN.h"
+#include "utils/CommandMapper.h"
 #include "ResponseHandlerRegistry.h"
 
 #define MAX_PROCESSED_MESSAGES 10
@@ -281,6 +281,32 @@ public:
     // } else {
     //     debug.print(F("CRC check failed."));
     // }
+  }
+
+  void handleSetWorkModeResponse(uint8_t *data, uint8_t length)
+  {
+    Debug debug("ResponseHandlers", __func__);
+    if (data[1] == 1)
+    {
+      debug.print(F("Set Work Mode: Success"));
+    }
+    else
+    {
+      debug.print(F("Set Work Mode: Failed"));
+    }
+  }
+
+  void handleSetCurrentResponse(uint8_t *data, uint8_t length)
+  {
+    Debug debug("ResponseHandlers", __func__);
+    if (data[1] == 1)
+    {
+      debug.print(F("Set Current: Success"));
+    }
+    else
+    {
+      debug.print(F("Set Current: Failed"));
+    }
   }
 
   void decodeMessage(const uint8_t *data, uint8_t length)

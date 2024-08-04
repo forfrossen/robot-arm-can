@@ -43,7 +43,9 @@
     "stdexcept": "cpp",
     "streambuf": "cpp",
     "cinttypes": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "*.tpp": "cpp",
+    "queue": "cpp"
   },
   "C_Cpp.default.intelliSenseMode": "windows-gcc-arm",
   "C_Cpp.default.mergeConfigurations": true,
@@ -55,6 +57,9 @@
     "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/variants/UNOWIFIR4/includes/ra_cfg/fsp_cfg/bsp",
     "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/variants/UNOWIFIR4/includes/ra_gen",
     "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/variants/UNOWIFIR4/includes/ra/arm/CMSIS_5/CMSIS/Core/Include",
-    "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/variants/UNOWIFIR4/includes/ra_cfg/fsp_cfg"
+    "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/variants/UNOWIFIR4/includes/ra_cfg/fsp_cfg",
+    "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/libraries/Arduino_FreeRTOS",
+    "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/libraries/Arduino_FreeRTOS/src",
+    "C:/Users/markus.ZION89/AppData/Local/Arduino15/packages/arduino/hardware/renesas_uno/1.2.0/libraries/Arduino_FreeRTOS/src/lib/FreeRTOS-Kernel-v10.5.1"
   ]
 }

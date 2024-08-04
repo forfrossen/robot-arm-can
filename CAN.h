@@ -1,5 +1,7 @@
 #ifndef CANBUS_H
 #define CANBUS_H
+
+#include <Arduino.h>
 #include <Arduino_CAN.h>
 
 #include "Debug.h"
