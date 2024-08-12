@@ -3,7 +3,7 @@
 #include <avr/pgmspace.h>
 #include <map>
 #include <string>
-#include "../Debug.h"
+#include "../Debug.hpp"
 
 struct CommandMap
 {

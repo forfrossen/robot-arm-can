@@ -1,7 +1,7 @@
 #ifndef UTILS_WEBSERVER
 #define UTILS_WEBSERVER
 
-#include "WiFiS3.h"
+#include "WiFiS3.hpp"
 
 void webserver(WiFiClient client)
 {

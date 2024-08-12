@@ -1,9 +1,9 @@
 #ifndef SET_CURRENT_COMMAND_H
 #define SET_CURRENT_COMMAND_H
 
-#include "../Command.h"
-#include "..\..\CANServo.h"
-#include "../../Debug.h"
+#include "../Command.hpp"
+#include "..\..\CANServo.hpp"
+#include "..\..\Debug.hpp"
 
 class SetCurrentCommand : public Command
 {

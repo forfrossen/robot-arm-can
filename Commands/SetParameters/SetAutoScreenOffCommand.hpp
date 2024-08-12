@@ -1,9 +1,9 @@
 #ifndef SET_AUTO_SCREEN_OFF_COMMAND_H
 #define SET_AUTO_SCREEN_OFF_COMMAND_H
 
-#include "../Command.h"
-#include "..\..\CANServo.h"
-#include "../../Debug.h"
+#include "../Command.hpp"
+#include "..\..\CANServo.hpp"
+#include "..\..\Debug.hpp"
 
 class SetAutoScreenOffCommand : public Command
 {

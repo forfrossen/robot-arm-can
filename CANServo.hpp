@@ -5,10 +5,10 @@
 #include <Arduino_CAN.h>
 #include <map>
 #include <functional>
-#include "Debug.h"
-#include "CAN.h"
-#include "utils\CommandMapper.h"
-#include "ResponseHandlerRegistry.h"
+#include "Debug.hpp"
+#include "CAN.hpp"
+#include "utils\CommandMapper.hpp"
+#include "ResponseHandlerRegistry.hpp"
 
 #define MAX_PROCESSED_MESSAGES 10
 
@@ -28,6 +28,8 @@ public:
   void handleSetWorkModeResponse(uint8_t *data, uint8_t length);
   void handleSetCurrentResponse(uint8_t *data, uint8_t length);
   void decodeMessage(const uint8_t *data, uint8_t length);
+  // static void taskFunctionWrapper(void *pvParameters);
+  void taskCheckForMessages();
 
   uint32_t getCanId() const { return canId; }
   uint32_t getCarryValue() const { return CarryValue; }

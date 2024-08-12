@@ -1,9 +1,9 @@
 #ifndef SET_TARGET_POSITION_COMMAND_H
 #define SET_TARGET_POSITION_COMMAND_H
 
-#include "Command.h"
-#include "..\CANServo.h"
-#include "../Debug.h"
+#include "Command.hpp"
+#include "..\CANServo.hpp"
+#include "..\Debug.hpp"
 class SetTargetPositionCommand : public Command
 {
 private:
@@ -14,7 +14,7 @@ private:
   bool absolute;
 
 public:
-  SetTargetPositionCommand(CANServo *servo, uint32_t position, uint8_t speed = 100, uint8_t acceleration = 5, bool absolute = true)
+  SetTargetPositionCommand(CANServo *servo, int position, int speed = 100, int acceleration = 5, bool absolute = true)
       : servo(servo), position(position), speed(speed), acceleration(acceleration), absolute(absolute) {}
 
   void execute() override

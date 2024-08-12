@@ -1,4 +1,4 @@
-#include "CANServo.h"
+#include "CANServo.hpp"
 
 CANServo::CANServo(uint32_t id, CANBus *bus, CommandMapper *commandMapper) : canId(id), canBus(bus), commandMapper(commandMapper)
 {
@@ -10,6 +10,27 @@ CANServo::CANServo(uint32_t id, CANBus *bus, CommandMapper *commandMapper) : can
   // registerResponseHandler(0x01, myResponseHandler); // Register handler for command code 0x01
 
   // Initialize the response handlers
+}
+
+void CANServo::taskCheckForMessages()
+{
+  while (true)
+  {
+    Debug debug("Servo42D_CAN", __func__);
+    CanMsg msg;
+    if (canBus->checkForMessages(msg))
+    {
+      debug.info();
+      debug.add("Received message with ID: ");
+      debug.add(msg.getStandardId(), HEX);
+      debug.println();
+      if (msg.getStandardId() == canId)
+      {
+        handleReceivedMessage(msg);
+      }
+    }
+    vTaskDelay(pdMS_TO_TICKS(500));
+  }
 }
 
 void CANServo::registerResponseHandler(uint8_t commandCode, std::function<void(uint8_t *, uint8_t)> handler)

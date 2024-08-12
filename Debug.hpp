@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <vector>
-#include "LogQueue.h"
+#include "LogQueue.hpp"
 
 enum LogLevel
 {
@@ -20,6 +20,11 @@ private:
   String functionName;
   std::vector<String> messageBuffer;
   static LogQueue *logQueue;
+  std::vector<String> disabledFunctions = {
+      // "task_checkMessages",
+      // "task_sendPositon",
+      // "task_QueryPosition",
+  };
 
 public:
   Debug(const String className, const String &functionName);

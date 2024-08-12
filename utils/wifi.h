@@ -2,8 +2,8 @@
 #define UTILS_WIFI
 
 #include "WiFiS3.h"
-#include "../Debug.h"
-#include "../inc/arduino_secrets.h"
+#include "..\Debug.hpp"
+#include "..\inc\arduino_secrets.hpp"
 #include "Arduino_LED_Matrix.h" // Include the LED_Matrix library
 
 class WiFiHelper

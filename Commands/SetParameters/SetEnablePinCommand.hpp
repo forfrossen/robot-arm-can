@@ -1,9 +1,9 @@
 #ifndef SET_ENABLE_PIN_COMMAND_H
 #define SET_ENABLE_PIN_COMMAND_H
 
-#include "../Command.h"
-#include "..\..\CANServo.h"
-#include "../../Debug.h"
+#include "../Command.hpp"
+#include "..\..\CANServo.hpp"
+#include "..\..\Debug.hpp"
 
 class SetEnablePinCommand : public Command
 {

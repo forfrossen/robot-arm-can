@@ -2,7 +2,6 @@
 #define LOG_QUEUE_H
 
 #include <Arduino_FreeRTOS.h>
-#include "lib/FreeRTOS-Kernel-v10.5.1/semphr.h"
 #include <queue>
 
 class LogQueue

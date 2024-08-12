@@ -4,9 +4,11 @@
 #include <Arduino.h>
 #include <Arduino_CAN.h>
 
-#include "Debug.h"
+#include "Debug.hpp"
 
 #define MAX_CALLBACKS 10
+
+static uint32_t const CAN_FILTER_MASK_STANDARD = 0x1FFC0000;
 
 class CANBus
 {
@@ -69,6 +71,13 @@ public:
     {
       debug.info();
       debug.print(F("CAN BUS initialized!"));
+      /*
+      CAN.setFilterMask_Standard(CAN_FILTER_MASK_STANDARD);
+      for (int mailbox = 0; mailbox < R7FA4M1_CAN::CAN_MAX_NO_STANDARD_MAILBOXES; mailbox++)
+      {
+        CAN.setFilterId_Standard(mailbox, 0x10);
+      }
+      */
     }
   }
 
@@ -80,6 +89,27 @@ public:
       crc += data[i];
     }
     return crc & 0xFF;
+  }
+
+  bool msgAvailable()
+  {
+    return CAN.available();
+  }
+
+  bool checkForMessages(CanMsg &msg)
+  {
+    Debug debug("CANBus", "checkForMessages\t");
+    if (CAN.available())
+    {
+      msg = CAN.read();
+
+      debug.info();
+      debug.add(F("Message received with ID: "));
+      debug.print(msg.getStandardId(), HEX);
+
+      return true;
+    }
+    return false;
   }
 
   bool sendCANMessage(uint32_t id, uint8_t length, uint8_t *data)

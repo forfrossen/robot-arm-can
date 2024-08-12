@@ -1,4 +1,6 @@
-#include "Debug.h"
+#include "Debug.hpp"
+#include <algorithm>
+#include <numeric>
 
 LogQueue *Debug::logQueue = nullptr;
 
@@ -47,11 +49,15 @@ void Debug::print(const String &value)
 
 void Debug::println()
 {
-  for (const auto &msg : messageBuffer)
+  String msgAll;
+  if (std::find(disabledFunctions.begin(), disabledFunctions.end(), functionName) == disabledFunctions.end())
   {
-    Serial.print(msg);
+    for (const auto &msg : messageBuffer)
+    {
+      msgAll += msg;
+    }
+    Debug::logQueue->enqueue(msgAll.c_str());
   }
-  Serial.println();
   messageBuffer.clear();
 }
 

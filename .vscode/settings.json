@@ -45,7 +45,8 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "*.tpp": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "numeric": "cpp"
   },
   "C_Cpp.default.intelliSenseMode": "windows-gcc-arm",
   "C_Cpp.default.mergeConfigurations": true,

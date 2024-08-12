@@ -1,9 +1,9 @@
 #ifndef SET_SUBDIVISION_INTERPOLATION_COMMAND_H
 #define SET_SUBDIVISION_INTERPOLATION_COMMAND_H
 
-#include "../Command.h"
-#include "..\..\CANServo.h"
-#include "../../Debug.h"
+#include "../Command.hpp"
+#include "..\..\CANServo.hpp"
+#include "..\..\Debug.hpp"
 
 class SetSubdivisionInterpolationCommand : public Command
 {

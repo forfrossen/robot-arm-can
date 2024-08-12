@@ -1,9 +1,9 @@
 #ifndef SET_LOCKED_ROTOR_PROTECTION_COMMAND_H
 #define SET_LOCKED_ROTOR_PROTECTION_COMMAND_H
 
-#include "../Command.h"
-#include "..\..\CANServo.h"
-#include "../../Debug.h"
+#include "../Command.hpp"
+#include "..\..\CANServo.hpp"
+#include "..\..\Debug.hpp"
 
 class SetLockedRotorProtectionCommand : public Command
 {

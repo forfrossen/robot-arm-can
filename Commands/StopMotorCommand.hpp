@@ -1,9 +1,9 @@
 #ifndef STOP_MOTOR_COMMAND_H
 #define STOP_MOTOR_COMMAND_H
 
-#include "Command.h"
-#include "..\CANServo.h"
-#include "../Debug.h"
+#include "Command.hpp"
+#include "..\CANServo.hpp"
+#include "..\Debug.hpp"
 
 class StopMotorCommand : public Command
 {
