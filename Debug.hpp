@@ -1,6 +1,7 @@
 #ifndef DEBUGGER_H
 #define DEBUGGER_H
 
+#include <Arduino_FreeRTOS.h>
 #include <Arduino.h>
 #include <vector>
 #include "LogQueue.hpp"
@@ -20,6 +21,7 @@ private:
   String functionName;
   std::vector<String> messageBuffer;
   static LogQueue *logQueue;
+
   std::vector<String> disabledFunctions = {
       // "task_checkMessages",
       // "task_sendPositon",
@@ -55,5 +57,6 @@ public:
 
   void error();
 };
+
 #include "Debug.tpp"
 #endif

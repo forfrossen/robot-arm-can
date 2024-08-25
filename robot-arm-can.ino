@@ -10,7 +10,7 @@
 
 #include <Arduino_FreeRTOS.h>
 
-#include "LogQueue.hpp"
+// #include "LogQueue.hpp"
 #include "Debug.hpp"
 #include "CAN.hpp"
 #include "CANServo.hpp"
@@ -31,6 +31,9 @@
 #include "Commands/Query/QueryMotorPositionCommand.hpp"
 #include "Commands/SetTargetPositionCommand.hpp"
 
+#define QUEUE_LENGTH 10
+#define ITEM_SIZE sizeof(String)
+
 const char compile_date[] = __DATE__ " " __TIME__;
 
 #ifdef USE_WIFI
@@ -41,7 +44,7 @@ LogQueue logQueue;
 CANBus *canBus;
 CommandMapper *commandMapper;
 
-std::map<uint8_t, CANServo *> Servos; // Replace LittleVector with std::map
+std::map<uint8_t, CANServo *> Servos;
 
 unsigned long prevTx = 0;
 unsigned long prevRx = 0;
@@ -53,17 +56,20 @@ int16_t randomValue = 0;
 uint8_t randomDirection = 0;
 uint16_t randomSpeed = 0;
 uint8_t randomAccel = 0;
-SemaphoreHandle_t xMutex;
 
 void setup()
 {
+  Debug::setLogQueue(&logQueue);
 
   Serial.begin(115200);
 
-  Debug debug("MAIN", __func__);
+  Serial.println(F("Starting..."));
 
-  Debug::setLogQueue(&logQueue);
+  // configPRINTF(("Another log message\n"));
+
   xTaskCreate(task_logProcessor, "LogProcessor", 128, NULL, 4, NULL);
+
+  Debug debug("MAIN", __func__);
 
   debug.info();
   debug.print(F("Hallo, Test from Arm !!!"));
@@ -86,8 +92,8 @@ void setup()
 
   // Initialisierung der Servo42D_CAN Instanzen
   Servos[0x01] = new CANServo(0x01, canBus, commandMapper);
-  Servos[0x02] = new CANServo(0x02, canBus, commandMapper);
-  Servos[0x03] = new CANServo(0x03, canBus, commandMapper);
+  // Servos[0x02] = new CANServo(0x02, canBus, commandMapper);
+  // Servos[0x03] = new CANServo(0x03, canBus, commandMapper);
 
   /*
   servo3.enableMotor();
@@ -106,35 +112,158 @@ void setup()
   // randomAccel = random(0, 255);
   delay(100);
 
-  xTaskCreate(
-      task_checkMessages,
-      "checkMessages",
-      1000,
-      NULL,
-      1,
-      NULL);
+  // xQueue = xQueueCreate(5, sizeof(long));
+  // if (xQueue != NULL)
+  // {
+  //   xTaskCreate(task_checkMessages, "checkMessages", 50, NULL, 1, NULL);
+  //   xTaskCreate(task_sendPositon, "sendPositons", 750, NULL, 1, NULL);
+  //   xTaskCreate(task_QueryPosition, "queryPosition", 256, NULL, 1, NULL);
 
-  xTaskCreate(
-      task_sendPositon,
-      "sendPositons",
-      1000,
-      NULL,
-      1,
-      NULL);
-
-  xTaskCreate(
-      task_QueryPosition,
-      "queryPosition",
-      256,
-      NULL,
-      1,
-      NULL);
-
-  // xTaskCreate(MyIdleTask, "IdleTask", 100, NULL, 0, NULL);
-
+  //   // xTaskCreate(MyIdleTask, "IdleTask", 100, NULL, 0, NULL);
+  //   vTaskStartScheduler();
+  // }
+  // else
+  // {
+  //   Serial.println("Queue not created");
+  // }
   vTaskStartScheduler();
   for (;;)
     ;
+}
+
+void task_logProcessor(void *pvParameters)
+{
+  for (;;)
+  {
+    if (!logQueue.isEmpty())
+    {
+      String message = logQueue.dequeue();
+      if (message != "")
+      {
+        Serial.println(message);
+      }
+    }
+    vTaskDelay(20 / portTICK_PERIOD_MS);
+  }
+}
+
+void task_checkMessages(void *pvParameters)
+{
+  UBaseType_t uxHighWaterMark;
+  Debug debug("MAIN", __func__);
+
+  uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+
+  for (;;)
+  {
+    debug.info();
+    debug.print(F("New iteration of taskCheckCanMessages"));
+
+    debug.info();
+    debug.add(F("High water mark before calling checkForMessages: "));
+    debug.print(uxHighWaterMark);
+
+    checkForMessages();
+
+    uxHighWaterMark = uxTaskGetStackHighWaterMark(NULL);
+    debug.info();
+    debug.add(F("High water mark after calling checkForMessages: "));
+    debug.print(uxHighWaterMark);
+
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+  }
+}
+
+void task_sendPositon(void *pvParameters)
+{
+  vTaskDelay(4000 / portTICK_PERIOD_MS);
+  Debug debug("MAIN", __func__);
+  for (;;)
+  {
+    debug.info();
+    debug.print(F("New iteration of taskSendRandomTargetPositionCommands"));
+    sendRandomTargetPositionCommands();
+    vTaskDelay(4000 / portTICK_PERIOD_MS);
+  }
+}
+
+void task_QueryPosition(void *pvParameters)
+{
+  vTaskDelay(2000 / portTICK_PERIOD_MS);
+  Debug debug("MAIN", __func__);
+  for (;;)
+  {
+    debug.info();
+    debug.print(F("New iteration of taskQueryMotorPosition"));
+    queryMotorPositions();
+    vTaskDelay(2000 / portTICK_PERIOD_MS);
+  }
+}
+
+void sendRandomTargetPositionCommands()
+{
+  Debug debug("MAIN", __func__);
+  uint16_t min = -40000;
+  uint16_t max = +40000;
+  randomValue = random(min, max);
+  randomSpeed = random(0, 2000);
+  randomDirection = random(0, 1);
+  randomAccel = random(0, 255);
+
+  debug.info();
+  debug.print(F("called"));
+
+  for (auto &pair : Servos)
+  {
+    Command *setTargetPositionCommand = new SetTargetPositionCommand(pair.second, randomValue, randomSpeed, randomAccel, true);
+    setTargetPositionCommand->execute();
+    delete setTargetPositionCommand;
+  }
+}
+
+void queryMotorPositions()
+{
+  Debug debug("MAIN", __func__);
+  debug.info();
+  debug.print(F("called"));
+
+  for (auto &pair : Servos)
+  {
+    Command *queryMotorPosition = new QueryMotorPositionCommand(pair.second);
+    queryMotorPosition->execute();
+    delete queryMotorPosition;
+  }
+}
+
+void checkForMessages()
+{
+
+  while (canBus->msgAvailable())
+  {
+
+    CanMsg msg;
+    canBus->checkForMessages(msg);
+    uint32_t id = msg.getStandardId();
+
+    if (Servos[id] == nullptr)
+    {
+      Serial.println("Servo not found for ID: " + id);
+      continue;
+    }
+
+    Servos[id]->handleReceivedMessage(msg);
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+  }
+}
+
+/* Idle Task with priority Zero */
+static void MyIdleTask(void *pvParameters)
+{
+  while (1)
+  {
+    Serial.println(F("Idle state"));
+    delay(10);
+  }
 }
 
 void loop() {}
@@ -231,120 +360,14 @@ void loop() {}
 //   delay(10);
 // }
 
-void task_logProcessor(void *pvParameters)
+void vLoggingPrintf(const char *pcFormat, ...)
 {
-  for (;;)
-  {
-    if (!logQueue.isEmpty())
-    {
-      String message = logQueue.dequeue();
-      if (message != "")
-      {
-        Serial.println(message);
-      }
-    }
-    vTaskDelay(20 / portTICK_PERIOD_MS);
-  }
-}
+  char buffer[configLOGGING_MAX_MESSAGE_LENGTH];
+  va_list args;
+  va_start(args, pcFormat);
+  vsnprintf(buffer, configLOGGING_MAX_MESSAGE_LENGTH, pcFormat, args);
+  va_end(args);
 
-void task_checkMessages(void *pvParameters)
-{
-  Debug debug("MAIN", __func__);
-  for (;;)
-  {
-    debug.info();
-    debug.print(F("New iteration of taskCheckCanMessages"));
-    checkForMessages();
-    vTaskDelay(500 / portTICK_PERIOD_MS);
-  }
-}
-
-void task_sendPositon(void *pvParameters)
-{
-  vTaskDelay(4000 / portTICK_PERIOD_MS);
-  Debug debug("MAIN", __func__);
-  for (;;)
-  {
-    debug.info();
-    debug.print(F("New iteration of taskSendRandomTargetPositionCommands"));
-    sendRandomTargetPositionCommands();
-    vTaskDelay(4000 / portTICK_PERIOD_MS);
-  }
-}
-
-void task_QueryPosition(void *pvParameters)
-{
-  vTaskDelay(2000 / portTICK_PERIOD_MS);
-  Debug debug("MAIN", __func__);
-  for (;;)
-  {
-    debug.info();
-    debug.print(F("New iteration of taskQueryMotorPosition"));
-    queryMotorPositions();
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
-  }
-}
-
-void sendRandomTargetPositionCommands()
-{
-  Debug debug("MAIN", __func__);
-  uint16_t min = -40000;
-  uint16_t max = +40000;
-  randomValue = random(min, max);
-  randomSpeed = random(0, 2000);
-  randomDirection = random(0, 1);
-  randomAccel = random(0, 255);
-
-  debug.info();
-  debug.print(F("called"));
-
-  for (auto &pair : Servos)
-  {
-    Command *setTargetPositionCommand = new SetTargetPositionCommand(pair.second, randomValue, randomSpeed, randomAccel, true);
-    setTargetPositionCommand->execute();
-    delete setTargetPositionCommand;
-  }
-}
-
-void queryMotorPositions()
-{
-  Debug debug("MAIN", __func__);
-  debug.info();
-  debug.print(F("called"));
-
-  for (auto &pair : Servos)
-  {
-    Command *queryMotorPosition = new QueryMotorPositionCommand(pair.second);
-    queryMotorPosition->execute();
-    delete queryMotorPosition;
-  }
-}
-
-void checkForMessages()
-{
-  while (canBus->msgAvailable())
-  {
-    CanMsg msg;
-    canBus->checkForMessages(msg);
-    uint32_t id = msg.getStandardId();
-
-    if (Servos[id] == nullptr)
-    {
-      Serial.println("Servo not found for ID: " + id);
-      continue;
-    }
-
-    Servos[id]->handleReceivedMessage(msg);
-    vTaskDelay(50 / portTICK_PERIOD_MS);
-  }
-}
-
-/* Idle Task with priority Zero */
-static void MyIdleTask(void *pvParameters)
-{
-  while (1)
-  {
-    Serial.println(F("Idle state"));
-    delay(10);
-  }
+  // Output the log message, e.g., to a serial port
+  Serial.println(buffer); // Using Arduino's Serial.print for demonstration
 }
